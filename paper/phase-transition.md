@@ -231,6 +231,78 @@ The convergence of break dates across independent metrics and independent reposi
 
 ---
 
+## 5. Discussion
+
+### 5.1 Minimum Viable Autocatalytic Set
+
+The theory predicts three orthogonal axes that governance must cover to break the 1D constraint: structural (preventing self-evaluation), temporal (preventing session amnesia), and corrective (preventing undetected drift). The specific components we observed — Triad role separation, persistent memory, and Dignity Net behavioral coherence — are one configuration satisfying these axes. They are not the only valid configuration, nor necessarily the minimal one.
+
+Other implementations could satisfy the same axes. The structural axis could be served by any mechanism that separates generation from evaluation — formal code review, independent testing pipelines, or separate human reviewers. The temporal axis requires only that corrections persist across sessions — a version-controlled correction log, a retrieval-augmented memory, or even a disciplined human notebook. The corrective axis requires real-time divergence detection — which could be implemented as automated drift metrics, periodic self-audits, or external monitoring.
+
+What matters is not the specific components but the catalytic closure of the set. Triad alone ran for approximately 2.5 months (early December 2025 to mid-February 2026) without triggering the structural break. The break appeared within one day of the third component's installation, when all six catalytic links in Table 1 of Section 2.3 became active. This is consistent with Kauffman's prediction [2]: below closure, components exist in isolation; at closure, the phase transition is sudden.
+
+### 5.2 Why N = 1
+
+This study examines one developer over seven months. The sample size is a limitation (Section 5.5), but it also has a methodological advantage: it eliminates inter-developer variation as a confound.
+
+If multiple developers had adopted the governance system simultaneously, any detected break could reflect social dynamics — shared learning, peer pressure, workflow convergence — rather than the governance infrastructure itself. With a single developer, the only variable that changed at the break date is the governance configuration. The developer's skill, domain, working hours, and hardware remained constant. The break is not explainable by a change in the developer; it coincides precisely with a change in the system.
+
+The ungoverned baseline (trusty-git-analytics) was produced by a different developer, which introduces a between-subjects confound. However, the baseline serves only to demonstrate 1D disorder signatures, not to provide a matched control. The primary comparison is within-subject: the memory repository before and after catalytic closure.
+
+### 5.3 Observer Effect
+
+A common objection to self-referential analysis is the observer effect: does the act of studying the system change its behavior? Three features of this study's design mitigate this concern.
+
+First, the governance infrastructure was built for operational use, not for this paper. Triad, persistent memory, and Dignity Net were designed and installed to improve the quality of human-AI collaboration. The paper was conceived months after the transition. The governance components could not have been influenced by the analysis because the analysis did not yet exist.
+
+Second, the commit metrics (lines changed, file count, time gap, message length, AI fraction) are extracted from git metadata, not from file contents. They cannot be gamed without altering the fundamental development workflow — which is itself the phenomenon under study.
+
+Third, the break detection is blind. The algorithm scans all valid split points and reports the maximum F-statistic. It was not told where to look, what date to expect, or how many breaks to find. The clustering of three metrics at February 13 is an output of the scan, not an input.
+
+### 5.4 Theoretical Implications
+
+This work connects two previously unrelated theoretical frameworks.
+
+Sacco, Sakthivadivel, and Levin [1] prove that decoder-only transformers with causal masking cannot sustain long-range order — a topological constraint derived from statistical mechanics. Their framework explains *why* bare LLMs fail at cross-session coherence but does not prescribe a remedy beyond "add topological dimensions."
+
+Kauffman [2, 3] and Hordijk and Steel [4] characterize the phase transition that occurs when mutually catalytic components reach closure — a result from theoretical chemistry and origin-of-life research. Their framework predicts *when* a system of interacting components transitions from disordered to ordered behavior but was not previously applied to AI governance.
+
+The novel connection is: governance components that add topological dimensions to a 1D system can form a Kauffman autocatalytic set, and their catalytic closure is the mechanism that triggers the Peierls escape from the Levin constraint. This predicts a specific, testable signature: a structural break in system behavior at the point of closure, detectable blind in the output history.
+
+The data are consistent with this prediction. In the memory repository, all five metrics break within three weeks of catalytic closure, with three clustering at the exact date. All five survive strict Bonferroni correction (threshold 3.85 × 10⁻⁵) with large effect sizes (Cohen's d: 0.58–1.76). The relinquishment repository provides partial confirmation: two of five metrics survive Bonferroni, all five survive Benjamini-Hochberg, and the directionality is consistent across all metrics.
+
+We do not claim the connection is mathematically proven. The Levin results concern Hamiltonians and thermodynamic limits; the Kauffman results concern reaction networks and catalytic closure. Mapping governance layers to both frameworks simultaneously requires assumptions — that commit metrics approximate thermodynamic observables, that catalytic links between governance components function analogously to chemical catalysis — that are plausible but not formally established. The empirical results are necessary but not sufficient to validate the theoretical bridge. Formal proof that governance ACS closure implies a phase transition in the Levin sense is future work.
+
+### 5.5 Limitations
+
+**Single developer.** All governed repositories were produced by one developer (the first author). User-specific effects — cognitive style, partial eidetic memory, decades of CLI experience — may contribute to the transition independently of the governance infrastructure. We cannot separate developer effects from governance effects without multi-developer data, which does not yet exist.
+
+**No pre-transition multi-participant data.** Two additional collaborators (the Triad protocol's designer and Dignity Net's designer) contributed to the governed system, but only after the phase transition. No pre-transition data from multiple participants exists to serve as a comparison. Multi-participant analysis is future work.
+
+**Commit metrics are proxies.** Lines changed, file count, and time gap measure development behavior, not code quality, correctness, or user satisfaction. The transition from large infrequent commits to small frequent commits is consistent with structured development but does not prove that the governed system produces better output — only that it produces differently structured output.
+
+**Single ungoverned baseline.** The ungoverned control (trusty-git-analytics) was produced by a different developer on a different project in a different language. It demonstrates 1D disorder signatures convincingly but cannot serve as a matched control for the governed repositories.
+
+**Bonferroni correction is conservative.** The Bonferroni threshold treats all split points as independent tests, which they are not — adjacent split points produce highly correlated F-statistics. The relinquishment repository's three Bonferroni failures (lines_changed, file_count, msg_length) all survive the less conservative Benjamini-Hochberg correction and show the same directionality as the memory repository, suggesting the Bonferroni threshold may be overly strict for this application. We report both corrections and let the reader judge.
+
+**Temporal confounds.** The governance components were installed sequentially over three months. Other changes occurred during this period — growing familiarity with the AI system, evolving project scope, external life events — that could contribute to behavioral shifts. The clustering of three breaks at a single date (February 13) argues against gradual confounds, but we cannot fully rule them out.
+
+---
+
+## 7. Conclusion
+
+We present the first documented detection of a phase transition in human-AI collaboration, triggered by the catalytic closure of a governance autocatalytic set. Five commit-level metrics in the memory repository show structural breaks clustering at the date of closure (February 13, 2026), all surviving strict Bonferroni correction with large effect sizes (Cohen's d: 0.58–1.76). A second governed repository provides partial confirmation: two of five metrics survive Bonferroni correction, all five survive Benjamini-Hochberg, and all show the same directionality. An ungoverned baseline exhibits signatures consistent with one-dimensional disorder — monotonic violation accumulation, rapid decorrelation, no self-correction — as predicted by the Levin topological constraint.
+
+Three practical implications follow.
+
+First, *governance infrastructure for AI systems should target three orthogonal axes* — structural, temporal, and corrective — and the components should be designed to catalyze each other. Partial coverage (two of three axes) did not trigger the transition in our data; closure did.
+
+Second, *the phase transition is detectable in commit metadata alone.* Organizations adopting AI governance can monitor for the transition using the same blind structural break scan applied here, without access to code contents or subjective quality assessments.
+
+Third, *the constraint is topological, not about intelligence.* Larger models, better training data, and longer context windows do not escape the 1D limitation proved by Levin [1]. The escape is structural: adding dimensions to the interaction topology. This reframes the question from "how smart is the AI?" to "what topology does the human-AI system occupy?"
+
+---
+
 ## Supplementary C: ABRCE Cross-Domain Dictionary
 
 The ABRCE operators used in this paper — A (abstraction), B (binding), R (circulation), C (coherence), E (composite) — are defined without reference to any specific domain [7]. The table below maps each operator to its standard equivalent in four established fields. Each cell is rated:
