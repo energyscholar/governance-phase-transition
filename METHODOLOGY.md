@@ -39,9 +39,9 @@ Each commit in this repo corresponds to one phase:
 | `0361-P1` | Script verification | Verification before generation |
 | `0361-P2` | Theoretical claims audit | Citation checking against source texts |
 | `0361-P3` | Paper skeleton (data + methods) | Data/interpretation separation |
-| `0361-P4` | Discussion + conclusion | Interpretation after verified data |
+| `0361-P4` | Statistical tightening | **Self-correction** — weakens own claims |
 | `0361-P5` | Domain translation table | Cross-domain verification |
-| `0361-P6` | Statistical tightening | **Self-correction** — weakens own claims |
+| `0361-P6` | Discussion + conclusion | Interpretation after verified data |
 | `0361-P7` | Final polish | Completeness pass |
 
 Phase 0 (multi-participant confounder test) produces results in a private repo;

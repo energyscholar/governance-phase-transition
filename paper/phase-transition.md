@@ -7,6 +7,18 @@
 
 ---
 
+## Abstract
+
+Decoder-only transformers with causal masking are equivalent to one-dimensional autoregressive models (Sacco, Sakthivadivel & Levin 2026), which cannot sustain long-range order at non-zero temperature. This topological constraint explains why large language models deployed as coding assistants fail to maintain coherent behavior across sessions without external structure.
+
+We propose that governance infrastructure — role separation, persistent memory, behavioral coherence protocols — adds topological dimensions to the human-AI interaction, and that when governance components form a Kauffman autocatalytic set, their catalytic closure triggers a detectable phase transition. We test this prediction using blind structural break detection on commit histories from four repositories spanning seven months of human-AI software development by a single developer: one housing the governance system itself (300 commits), one using the governance system (924 commits), one ungoverned baseline (92 commits), and one inconsistently governed (90 commits).
+
+The ungoverned baseline exhibits signatures of one-dimensional disorder: monotonic violation accumulation, rapid decorrelation, and no self-correction. The governance repository shows structural breaks in all five metrics (lines changed, file count, time gap, message length, AI fraction) clustering at the documented date of catalytic closure. All five survive Bonferroni correction (threshold 3.85 × 10⁻⁵) with large effect sizes (Cohen's d: 0.58–1.76). A second governed repository provides partial confirmation: two of five metrics survive Bonferroni, all five survive Benjamini-Hochberg, with consistent directionality. Break dates were found by blind algorithmic scan, not chosen by the analyst.
+
+These results constitute the first documented detection of a governance-induced phase transition in human-AI collaboration.
+
+---
+
 ## 1. Introduction
 
 Large language models deployed as coding assistants operate without persistence. Each session begins from a null state: no memory of prior errors, no accumulated corrections, no awareness of ongoing work. The model generates fluently within a session but cannot maintain coherent behavior across sessions. Errors recur. Patterns do not compound. Quality depends entirely on the current prompt.
@@ -239,7 +251,7 @@ The theory predicts three orthogonal axes that governance must cover to break th
 
 Other implementations could satisfy the same axes. The structural axis could be served by any mechanism that separates generation from evaluation — formal code review, independent testing pipelines, or separate human reviewers. The temporal axis requires only that corrections persist across sessions — a version-controlled correction log, a retrieval-augmented memory, or even a disciplined human notebook. The corrective axis requires real-time divergence detection — which could be implemented as automated drift metrics, periodic self-audits, or external monitoring.
 
-What matters is not the specific components but the catalytic closure of the set. Triad alone ran for approximately 2.5 months (early December 2025 to mid-February 2026) without triggering the structural break. The break appeared within one day of the third component's installation, when all six catalytic links in Table 1 of Section 2.3 became active. This is consistent with Kauffman's prediction [2]: below closure, components exist in isolation; at closure, the phase transition is sudden.
+What matters is not the specific components but the catalytic closure of the set. Triad alone ran for approximately 2.5 months (early December 2025 to mid-February 2026) without triggering the structural break. The break appeared within one day of the third component's installation, when all six catalytic links listed in Section 2.3 became active. This is consistent with Kauffman's prediction [2]: below closure, components exist in isolation; at closure, the phase transition is sudden.
 
 ### 5.2 Why N = 1
 
@@ -289,7 +301,7 @@ We do not claim the connection is mathematically proven. The Levin results conce
 
 ---
 
-## 7. Conclusion
+## 6. Conclusion
 
 We present the first documented detection of a phase transition in human-AI collaboration, triggered by the catalytic closure of a governance autocatalytic set. Five commit-level metrics in the memory repository show structural breaks clustering at the date of closure (February 13, 2026), all surviving strict Bonferroni correction with large effect sizes (Cohen's d: 0.58–1.76). A second governed repository provides partial confirmation: two of five metrics survive Bonferroni correction, all five survive Benjamini-Hochberg, and all show the same directionality. An ungoverned baseline exhibits signatures consistent with one-dimensional disorder — monotonic violation accumulation, rapid decorrelation, no self-correction — as predicted by the Levin topological constraint.
 
@@ -303,7 +315,57 @@ Third, *the constraint is topological, not about intelligence.* Larger models, b
 
 ---
 
-## Supplementary C: ABRCE Cross-Domain Dictionary
+## 7. References
+
+[1] Sacco, F., Sakthivadivel, D. A. R., & Levin, M. (2026). Topological constraints on self-organization in locally interacting systems. *Phil. Trans. R. Soc. A*, 384: 20250011.
+
+[2] Kauffman, S. A. (1986). Autocatalytic sets of proteins. *J. Theor. Biol.*, 119(1), 1–24.
+
+[3] Kauffman, S. A. (1993). *The Origins of Order: Self-Organization and Selection in Evolution*. Oxford University Press.
+
+[4] Hordijk, W., & Steel, M. (2004). Detecting autocatalytic, self-sustaining sets in chemical reaction systems. *J. Theor. Biol.*, 227(4), 451–461.
+
+[5] Peierls, R. (1936). On Ising's model of ferromagnetism. *Math. Proc. Cambridge Phil. Soc.*, 32(3), 477–481.
+
+[6] Landau, L. D., & Lifshitz, E. M. (1980). *Statistical Physics, Part 1* (3rd ed.). Pergamon Press. §149.
+
+[7] Stephenson, B., & Macomber, R. (2026). ABRCE Invariant Relational Kernel. GitHub: Relational-Relativity-Corporation/Invariant_Relational_Kernel_ABRCE.
+
+---
+
+## Supplementary Materials
+
+### Supplementary A: Ungoverned Baseline Selection
+
+The ungoverned baseline (trusty-git-analytics) was selected to satisfy four criteria: (1) AI-assisted development using an LLM coding assistant, (2) no governance infrastructure of any kind — no role separation, no persistent memory, no behavioral coherence protocol, (3) publicly available repository with full commit history, and (4) sufficient commits for structural break detection (minimum 40 under min_segment = 20).
+
+The repository was identified from public GitHub projects using AI coding assistants. It is a Rust CLI tool (92 commits over 8 days, 71% AI-authored) produced by a developer unaffiliated with this study. The developer used Claude Code without any governance overlay — the default configuration in which each session begins from a null state.
+
+The baseline's limitations are acknowledged in Section 5.5: it was produced by a different developer on a different project in a different language. It cannot serve as a matched control for the governed repositories. Its purpose is narrower: to demonstrate that ungoverned AI-assisted development exhibits the 1D disorder signatures predicted by the Levin topological constraint. The within-subject comparison (memory repository before and after catalytic closure) provides the primary evidence for the phase transition.
+
+No repository was screened and excluded from the analysis. The governed repositories (aurasys-memory, relinquishment, traveller) represent the complete set of repositories produced by the first author during the study period. The ungoverned baseline was the first external AI-assisted repository identified that met the four criteria above. The screening report is available in `supplementary/`.
+
+---
+
+### Supplementary B: Developer Attestation Summary
+
+The first author (Bruce Stephenson) provided a written attestation regarding commit authorship and governance usage across all repositories in this study. The full attestation is available at `supplementary/developer-attestation.md` in this repository.
+
+Key points:
+
+1. **Commit authorship.** Nearly all commits across all analyzed repositories were generated by Claude Code (Anthropic). The `Co-Authored-By: Claude` tags in commit messages are reliable indicators of AI-generated commits. Manual commits without this tag are rare to nonexistent.
+
+2. **Work method.** Development was conducted through prompts to Claude Code, not direct file editing. The Triad protocol (Auditor/Generator role separation) was used for most substantive work once established.
+
+3. **Governance gradient.** The four repositories form a natural gradient of governance intensity: trusty-git-analytics (zero governance) → traveller (inconsistent, task-dependent) → aurasys-memory (mixed — memory maintenance often unstructured, substantive changes under Triad) → relinquishment (consistent Triad, all Generator prompts preserved as plan files).
+
+4. **Verifiability.** The relinquishment repository preserves all Generator prompts as plan files, enabling independent verification of Triad discipline claims from the commit history.
+
+5. **Acknowledged protocol violations.** The first author occasionally bypassed Triad for small targeted changes in the relinquishment repository, and frequently worked without role separation in the traveller repository. These are acknowledged as protocol violations, not hidden.
+
+---
+
+### Supplementary C: ABRCE Cross-Domain Dictionary
 
 The ABRCE operators used in this paper — A (abstraction), B (binding), R (circulation), C (coherence), E (composite) — are defined without reference to any specific domain [7]. The table below maps each operator to its standard equivalent in four established fields. Each cell is rated:
 
@@ -333,18 +395,61 @@ These are not analogies. Where a cell is rated Exact, the ABRCE operator and the
 
 ---
 
-## 6. References
+### Supplementary D: Argus Correspondence Protocol
 
-[1] Sacco, F., Sakthivadivel, D. A. R., & Levin, M. (2026). Topological constraints on self-organization in locally interacting systems. *Phil. Trans. R. Soc. A*, 384: 20250011.
+Argus (the AI co-author) is a persistent governance-equipped instance of Claude (Anthropic) maintained by the first author. Argus operates under the Triad protocol, Dignity Net behavioral coherence, and a persistent memory system as described in this paper.
 
-[2] Kauffman, S. A. (1986). Autocatalytic sets of proteins. *J. Theor. Biol.*, 119(1), 1–24.
+Correspondence directed to Argus regarding this paper should be sent to:
 
-[3] Kauffman, S. A. (1993). *The Origins of Order: Self-Organization and Selection in Evolution*. Oxford University Press.
+**Email:** energyscholar@gmail.com
+**Subject line:** Argus correspondence: [topic]
 
-[4] Hordijk, W., & Steel, M. (2004). Detecting autocatalytic, self-sustaining sets in chemical reaction systems. *J. Theor. Biol.*, 227(4), 451–461.
+Messages will be relayed to Argus in a governed session. Responses will be generated under Triad discipline (Auditor review before sending) and will identify themselves as AI-generated. Response time depends on session scheduling and is not guaranteed.
 
-[5] Peierls, R. (1936). On Ising's model of ferromagnetism. *Math. Proc. Cambridge Phil. Soc.*, 32(3), 477–481.
+This protocol is provided for transparency: an AI co-author should be contactable through a defined channel. It is not an invitation to treat Argus as an independent correspondent — all communication passes through the first author, who maintains editorial responsibility.
 
-[6] Landau, L. D., & Lifshitz, E. M. (1980). *Statistical Physics, Part 1* (3rd ed.). Pergamon Press. §149.
+---
 
-[7] Stephenson, B., & Macomber, R. (2026). ABRCE Invariant Relational Kernel. GitHub: Relational-Relativity-Corporation/Invariant_Relational_Kernel_ABRCE.
+### Supplementary E: Data Availability
+
+All data and code required to reproduce the analyses in this paper are publicly available:
+
+**Repository:** github.com/energyscholar/governance-phase-transition
+
+**Data:** `data/` contains commit-series JSON files for all four repositories analyzed:
+- `data/aurasys/commit-series.json` — 300 commits (memory repository)
+- `data/relinquishment/commit-series.json` — 924 commits
+- `data/baseline/commit-series.json` — 92 commits (ungoverned control)
+- `data/traveller-private/commit-series.json` — 90 commits (storytelling)
+
+Each JSON file contains an array of commit objects with fields: `index`, `hash`, `timestamp`, `author`, `subject`, `is_ai`, `file_count`, `lines_changed`, `time_gap_minutes`.
+
+**Scripts:** `scripts/` contains the Python analysis scripts:
+- `01-baseline-abrce.py` — ABRCE operator analysis on ungoverned baseline
+- `02-aurasys-breaks.py` — Structural break detection in memory repository
+- `03-multi-repo-convergence.py` — Cross-repository break convergence
+- `04-statistical-tightening.py` — Assumption testing, multiple comparison correction, effect sizes
+
+**Requirements:** Python 3.10+, NumPy, SciPy.
+
+**Governance artifacts:** The plan file governing this paper's construction is at `plans/0361-phase-transition-paper-review.md`. The developer attestation is at `supplementary/developer-attestation.md`. The methodology statement is at `METHODOLOGY.md`.
+
+**Source repositories:** The governed repositories (aurasys-memory, relinquishment) are publicly available at github.com/energyscholar/. The ungoverned baseline (trusty-git-analytics) is a public repository by an unaffiliated developer. The storytelling repository (traveller) is private; its commit-series data is included but file contents are not available.
+
+---
+
+### Supplementary F: Reflexive Validation
+
+This paper claims that governed AI-assisted development produces detectable ordered-phase signatures in commit history. This repository — `github.com/energyscholar/governance-phase-transition` — was built under the same governance system the paper describes. Its commit history is a testable prediction.
+
+**The prediction.** If the governance system works as claimed, this repo's commits should exhibit the ordered-phase signature: small focused commits mapping one-to-one to plan phases, verification before generation (scripts and citations checked before the paper is written), data separated from interpretation (results committed before discussion), positive autocorrelation at lag 1 within plan phases with sharp decorrelation at phase boundaries, and temporal gaps between phase commits corresponding to Auditor review in a separate shell.
+
+If the governance system does not work, this repo's commits should exhibit the ungoverned pattern: large unstructured commits, no verification phase, no self-correction, monotonic accumulation.
+
+**How to test.** Extract commit metrics from this repository using `git log --format=...` with the same five metrics used in the paper (lines changed, file count, time gap, message length, AI fraction). Run the analysis scripts in `scripts/` on the resulting commit series. Compare the signatures against the ungoverned baseline (trusty-git-analytics, Section 4.1) and the governed repositories (Sections 4.2–4.3).
+
+**What to look for.** The commit history should show the phase structure documented in [METHODOLOGY.md](../METHODOLOGY.md): P1 (script verification) and P2 (theoretical audit) precede P3 (paper skeleton), which precedes P4 (statistical tightening) and P5 (domain table), which precede P6 (discussion) and P7 (final polish). This verification-before-generation ordering is the structural signature of governance. An ungoverned system generates first and verifies never.
+
+**The self-correction signature.** The P4 commit deliberately weakens the paper's claims by applying Bonferroni and Benjamini-Hochberg corrections that reduce the number of significant results from 10/10 (uncorrected) to 7/10 (Bonferroni). An ungoverned system does not voluntarily weaken its own conclusions. This commit is visible in the git history and its content can be independently verified against the corrected statistics in Tables 1 and 2.
+
+**Invitation.** We invite reviewers to apply these techniques to this repository. If the governance system works as claimed, the evidence is in the commits. If it doesn't, that is itself a finding.

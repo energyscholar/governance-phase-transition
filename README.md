@@ -15,16 +15,19 @@ This paper claims governed AI produces ordered-phase signatures in commit histor
 ```
 METHODOLOGY.md      Why this repo's commit history is itself testable evidence
 paper/              The manuscript
+plans/              Auditor plan files (the spec each Generator phase implements)
 data/               Commit series data (JSON) for each repository
   aurasys/          Governance system (300 commits, Nov 2025 - May 2026)
   baseline/         Ungoverned external project (92 commits, May 2026)
   traveller-private/ Creative project (90 commits, Dec 2025 - May 2026)
   relinquishment/   Technical manuscript project (924 commits, Feb - May 2026)
 scripts/            Analysis scripts (Python)
-  01-baseline-abrce.py       ABRCE operators on ungoverned baseline
-  02-aurasys-breaks.py       Phase transition detection in governance repo
+  01-baseline-abrce.py          ABRCE operators on ungoverned baseline
+  02-aurasys-breaks.py          Phase transition detection in governance repo
   03-multi-repo-convergence.py  Cross-repository break convergence
+  04-statistical-tightening.py  Assumption tests, multiple comparison correction, effect sizes
 supplementary/      Developer attestation, screening report
+verification/       Script verification and theoretical audit reports
 ```
 
 ## Requirements
