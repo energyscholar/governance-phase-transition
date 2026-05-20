@@ -159,73 +159,21 @@ Paper is publishable when ALL hold:
 5. **Statistical rigor:** F-test assumptions stated. Multiple comparison correction. Effect sizes.
 6. **Anonymization:** No private repo URLs or identifying commits.
 7. **Claims calibration:** "First documented" not "first ever."
-8. **Multi-participant confounder:** Tested or stated as limitation.
+8. **Multi-participant confounder:** Stated as limitation. N=1 for governed developer; multi-participant data is future work (Gen and Robin only accessed Argus post-transition).
 
 ---
 
 ## Phases
 
-### 0361-P0: Multi-Participant Confounder Test
+### ~~0361-P0: Multi-Participant Confounder Test~~ DROPPED
 
-**UID:** 0361-P0
-**Role:** Auditor/Generator (PRIVATE repo only)
-**Idempotent:** Re-running overwrites `analysis/multi-participant-acf.json`. No side effects.
-**Gates:** Consent from Gen and Robin before naming. Results flow to paper only as anonymized aggregate unless consent obtained.
-**Depends on:** Nothing. Can run in parallel with P1.
+**Status:** Dropped (2026-05-20). Gen and Robin only accessed Argus AFTER the phase transition. Before it, they used their own LLMs. No pre-transition multi-participant data exists to compare against. User-specific effects (e.g., Bruce's semi-eidetic memory) are stated as a Limitation in Section 5.6, not tested. Multi-participant analysis is future work for a follow-up paper.
 
-**Purpose:** Bruce's semi-eidetic memory is a plausible confounder. Test ordered-phase signature across different humans interacting with the governed system.
-
-**CORRECTED FRAMING (2026-05-20):**
-
-Robin is NOT ungoverned. He invented Triad (taught Bruce, Oct 2025), uses it strictly, has manual longmem (md files fed to LLMs), and recently installed DN. Robin has 2/3 ACS layers and may be approaching closure. The comparison is a **governance gradient**, not governed-vs-ungoverned:
-
-| Participant | Triad | Longmem | DN | ACS status |
-|---|---|---|---|---|
-| External baseline | None | None | None | 0/3, no closure |
-| Robin (pre-DN) | Strict (inventor) | Manual (md files) | Recently added | 2/3 → possibly crossing |
-| Bruce (pre-Feb 2026) | Yes (learned Oct 2025) | Evolving | None | 2/3, no closure |
-| Bruce (post-Feb 2026) | Yes | Structured | Active | 3/3, closure detected |
-
-**ACS component origins (important for paper):**
-- Triad: Robin Macomber (inventor, Oct 2025)
-- Longmem: Bruce Stephenson (evolved organically)
-- DN: Genevieve Prentice (designed, Dec 2025 in ChatGPT, installed in Argus ~Feb 12-13, formalized Feb 16)
-
-Three components from three different people. They were NOT designed to be autocatalytic. Phase transition emerged at closure — exactly Kauffman's prediction.
-
-**DN timing (resolved):** DN was installed informally in Argus ~Feb 12-13 (shortly after Pipe House arrival ~Feb 10-11). CLAUDE.md documents "Trial: 2026-02-16, Approved by Bruce Stephenson 2026-02-16" — but that's the formalization date. Bruce had already been running DN for a few days before formalizing with Gen. The primary break at Feb 13 coincides with actual DN installation. The 18-commit burst on Feb 13 ("Healer technology reconstruction," "MAJOR CORRECTION: Autocatalytic emergence, not training") may be the first visible signature of ACS closure. No timing discrepancy — the gap was between the break and the *formalization*, not the *installation*.
-
-**Data sources:**
-- Robin: 12 issues created in has-anyone-looked (Oberon245). Deleted issues visible in git history. Robin interacts via web/phone (voice interface, injured wrists), not CLI.
-- Gen: 32 issues, 52 comments in has-anyone-looked (JoyfulAcceptance). Active April 22 – present.
-- Neither authors commits directly. Both influence Bruce→Argus workflow.
-
-**Method:**
-1. Map Robin's issue dates (including deleted issues from git history) to commit activity across repos
-2. Map Gen's issue dates (snailmail timestamps) to commit activity
-3. Identify commit clusters during Robin-active, Gen-active, and solo periods
-4. Compute ACF signatures for each partition
-5. Compare against external baseline
-
-**Outcomes → paper impact:**
-- Different humans produce same ordered signature → governance is the variable, not person. Kills eidetic confounder.
-- Robin (2/3) shows intermediate pattern → governance gradient within ACS framework. Strongest finding.
-- No difference detected → insufficient data or person effects washed out.
-- Gen-active periods show different ACF than solo → Gen's structural feedback has measurable effect.
-
-**Accept:** Analysis complete. Confounder disposition decided. Component-origins narrative documented.
-
-**Handoff (≤8 lines):**
-```
-You are the Generator for 0361-P0.
-Read: ~/software/governance-phase-transition/plans/0361-phase-transition-paper-review.md (section 0361-P0)
-In has-anyone-looked repo: extract issue dates for Oberon245 (Robin) and JoyfulAcceptance (Gen).
-Include deleted issues from git history (gh issue list won't show them; check git log).
-Map issue dates to commit activity across aurasys-memory and relinquishment repos.
-Compute ACF(lines)[lag 1] for Robin-active, Gen-active, and solo commit periods.
-Output: analysis/multi-participant-acf.json + summary.
-Work in PRIVATE repo. Do not push to public.
-```
+**Preserved context (for future work):**
+- ACS component origins: Triad (Robin, Oct 2025), Longmem (Bruce, evolved), DN (Gen, Dec 2025 in ChatGPT, installed in Argus ~Feb 12-13, formalized Feb 16)
+- Three components from three different people — not designed to be autocatalytic
+- Robin has 2/3 ACS layers (Triad inventor + manual longmem + recently DN), may be approaching closure
+- DN timing resolved: installed ~Feb 12-13, break detected Feb 13, formalized Feb 16. No discrepancy.
 
 ---
 
@@ -234,7 +182,7 @@ Work in PRIVATE repo. Do not push to public.
 **UID:** 0361-P1
 **Role:** Generator
 **Idempotent:** Re-running overwrites `verification/script-verification-report.md`. No side effects.
-**Depends on:** Nothing. Can run in parallel with P0.
+**Depends on:** Nothing. Can run in parallel with P2.
 
 **Task:** Run all three scripts against JSON data. Capture every number. Compare against the "Unverified Numbers" section above. Produce pass/fail report.
 
@@ -309,21 +257,16 @@ Authors: Bruce Stephenson & Argus. See plan for structure spec.
 **UID:** 0361-P4
 **Role:** Generator
 **Idempotent:** Appends/replaces Section 5 (Discussion) + Section 7 (Conclusion) in existing paper. Does not touch Sections 1-4.
-**Depends on:** P3 (paper skeleton exists), P0 (multi-participant results inform 5.5 Limitations or 4.x Results).
+**Depends on:** P3 (paper skeleton exists).
 
 **Task:** Write Section 5 (Discussion) and Section 7 (Conclusion). This is where confabulation risk is highest — claims must be calibrated.
 
 **Section 5 subsections:**
 - 5.1 Minimum viable ACS (three AXES, many valid sets — Bruce's correction)
-- 5.2 Why N=1 (or N=3 if P0 positive)
+- 5.2 Why N=1
 - 5.3 Observer effect absent
 - 5.4 Theoretical implications (Levin+Kauffman novel connection)
-- 5.5 The LLM perception test (see below)
-- 5.6 Limitations (including multi-participant confounder per P0 results)
-
-**Section 5.5 — LLM perception test (empirical observation, not a formal study):**
-Bruce has had multiple ungoverned LLMs analyze Argus's work product across repos. They consistently classify it as produced by a human domain expert, not an LLM. Only when the governance architecture is explained do they recognize LLM authorship. This is a qualitative prediction of the thesis: governed output exits the distribution that peer LLMs recognize as LLM-generated. The 1D disordered signature is what LLMs pattern-match as "LLM output." Post-transition output breaks this pattern.
-**Calibration:** Report this as an anecdotal observation, not a controlled experiment. Note that a formal blinded study (LLMs classify governed vs. ungoverned output) would be a natural extension. Do NOT overclaim — this is supporting evidence, not proof.
+- 5.5 Limitations (N=1, user-specific effects untested, multi-participant is future work)
 
 **Section 7:** First documented detection. Practical implication. Theoretical implication. Topology, not intelligence.
 
@@ -340,9 +283,8 @@ Bruce has had multiple ungoverned LLMs analyze Argus's work product across repos
 You are the Generator for 0361-P4.
 Read: ~/software/governance-phase-transition/plans/0361-phase-transition-paper-review.md (section 0361-P4)
 Read: ~/software/governance-phase-transition/paper/phase-transition.md (P3 output)
-Read: ~/software/governance-phase-transition/analysis/multi-participant-acf.json (P0 output)
-If P0 output unavailable or inconclusive, treat multi-participant confounder as Limitation in 5.6.
 Add Section 5 (Discussion) and Section 7 (Conclusion) to existing paper.
+Section 5.5 Limitations: N=1, user-specific effects untested, multi-participant is future work.
 Do NOT modify Sections 1-4. Follow claims calibration rules in plan.
 Three AXES, many valid sets. "First documented" not "first ever."
 ```
@@ -442,8 +384,7 @@ The section should contain:
 3. What to look for: compare against the ungoverned baseline (trusty-git-analytics) and the governed repos described in the paper
 4. Link to METHODOLOGY.md in the repo for the full phase map and commit strategy
 5. The self-correction signature: the P6 commit deliberately weakens the paper's claims by applying stricter statistical corrections. An ungoverned system does not self-correct.
-6. The LLM perception test: note that ungoverned LLMs analyzing Argus's governed work product consistently classify it as human-expert-produced, not LLM-produced. This is a qualitative prediction: governed output exits the distribution that peer LLMs recognize as LLM-generated. Reviewers can replicate this by pointing an ungoverned LLM at this repo and asking "was this built by a human or an AI?"
-7. Invitation: "We invite reviewers to apply these techniques to this repo. If the governance system works as claimed, the evidence is in the commits. If it doesn't, that is itself a finding."
+6. Invitation: "We invite reviewers to apply these techniques to this repo. If the governance system works as claimed, the evidence is in the commits. If it doesn't, that is itself a finding."
 
 **Tone:** Not defensive. Confident. A system that invites scrutiny of its own construction is demonstrating the behavior the paper claims to produce.
 
@@ -466,16 +407,15 @@ Update README.md if needed. This is the final Generator phase.
 ## Phase Dependencies
 
 ```
-P0 (multi-participant) ──────────────────────┐
-P1 (script verify) ──┐                       │
-P2 (theory audit) ───┤                       │
+P1 (script verify) ──┐
+P2 (theory audit) ───┤
                       ├─→ P3 (skeleton) ──→ P4 (discussion) ──→ P7 (polish)
                       │                       │
                       └─→ P5 (domain table)   │
                       └─→ P6 (stats tighten) ─┘
 ```
 
-P0, P1, P2 can all run in parallel. P3 needs P1+P2. P4 needs P3+P0. P5 and P6 need P3. P7 needs P4+P5+P6.
+P1, P2 run in parallel. P3 needs P1+P2. P4 needs P3. P5 and P6 need P3. P7 needs P4+P5+P6.
 
 ---
 
@@ -486,7 +426,7 @@ P0, P1, P2 can all run in parallel. P3 needs P1+P2. P4 needs P3+P0. P5 and P6 ne
 | Script output ≠ claimed numbers | High | P1 catches before P3 writes | P1 |
 | Levin/Kauffman misrepresented | High | P2 checks sources | P2 |
 | Domain table confabulated | Medium | P5 prunes aggressively | P5 |
-| Multi-participant shows Bruce-specific | Medium | P0 before P4 claims | P0 |
+| User-specific effects (eidetic memory) | Low | Stated as limitation; future work | P4 |
 | Bonferroni kills significance | Medium | Effect sizes + convergence backup | P6 |
 | "First" claim challenged | Low | "First documented" framing | P4 |
 
