@@ -6,9 +6,14 @@ Stephenson & Argus, 2026.
 
 We report the first empirical detection of a phase transition in human-AI collaboration. Using blind structural break detection on 1,015 commits across three repositories, we detect a sharp transition coinciding with the activation of a three-component autocatalytic governance set. The result is predicted by the conjunction of Levin's topological theorems (1D systems cannot sustain order) and Kauffman's RAF theory (phase transitions at catalytic closure).
 
+## This Repo Is a Dataset
+
+This paper claims governed AI produces ordered-phase signatures in commit history. This repo is built under the same governance system, and its commit history is intended to be analyzed with the same techniques. See [METHODOLOGY.md](METHODOLOGY.md) for details and an invitation to test this claim.
+
 ## Repository Structure
 
 ```
+METHODOLOGY.md      Why this repo's commit history is itself testable evidence
 paper/              The manuscript
 data/               Commit series data (JSON) for each repository
   aurasys/          Governance system (300 commits, Nov 2025 - May 2026)
