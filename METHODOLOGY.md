@@ -28,7 +28,7 @@ The paper is built under the Triad protocol:
 - **Dignity Net** (behavioral coherence): monitors for drift, escalation protocol
 
 The plan file is publicly available at:
-`github.com/energyscholar/relinquishment/plans/0361-phase-transition-paper-review.md`
+`github.com/energyscholar/governance-phase-transition/plans/0361-phase-transition-paper-review.md`
 
 ## Phase Map
 
