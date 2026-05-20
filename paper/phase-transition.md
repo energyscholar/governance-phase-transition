@@ -231,6 +231,36 @@ The convergence of break dates across independent metrics and independent reposi
 
 ---
 
+## Supplementary C: ABRCE Cross-Domain Dictionary
+
+The ABRCE operators used in this paper — A (abstraction), B (binding), R (circulation), C (coherence), E (composite) — are defined without reference to any specific domain [7]. The table below maps each operator to its standard equivalent in four established fields. Each cell is rated:
+
+- **Exact:** Mathematical identity. Same operation, different notation.
+- **Approximate:** Same structure. Minor differences in boundary conditions, parameterization, or scope.
+
+These are not analogies. Where a cell is rated Exact, the ABRCE operator and the domain-specific operation produce identical output given identical input. The domain-neutral formulation means that results derived in one field transfer directly to others at the Exact level and with stated caveats at the Approximate level.
+
+**Table C1: ABRCE operator equivalences across domains**
+
+| Operator | Definition | Statistical Mechanics | Time Series | Signal Processing | Network Science |
+|---|---|---|---|---|---|
+| **A** | NodeField → EdgeField: pairwise differences x_{i+1} − x_i | Discrete gradient on lattice | First differences Δx_t = x_t − x_{t−1} | First-order difference filter h[n] = [1, −1] | Coboundary operator (δf)(u,v) = f(v) − f(u) |
+| | | **Exact** | **Exact** | **Exact** | **Exact** |
+| **B** | EdgeField → EdgeField: local symmetric accumulation over window w | Block-spin coarse-graining (averaging over spatial blocks) | Centered moving average MA(w) | Rectangular (boxcar) FIR lowpass filter | Symmetric neighborhood aggregation (message-passing sum over incident edges) |
+| | | **Exact** | **Exact** | **Exact** | **Exact** |
+| **R** | EdgeField × ℝ → EdgeField: antisymmetric circulation, parameterized by ρ | Plaquette term in lattice gauge theory (net flux around a loop); trivially zero on 1D chains | No direct analog (time series are 1D; circulation requires loops) | Hilbert transform (antisymmetric 90° phase shift; creates analytic signal) | Discrete curl in Hodge decomposition (net flow around 2-simplices) |
+| | | **Approximate** — Ising models per Levin [1] lack gauge structure; plaquette terms arise in 2D+ gauge theories | **N/A on 1D** — consistent with R = 0 in this paper's application | **Approximate** — shares antisymmetric structure but operates by convolution, not loop summation | **Approximate** — same concept (loop-based flow), but Hodge curl acts on 2-simplices and is projected back to edges |
+| **C** | EdgeField → EdgeField: bounded coherence, output ∈ (−1, 1) | Mean-field magnetization m = tanh(βh) in the Ising model | Logistic / tanh squashing function | Soft limiter / compressor (bounds signal amplitude to a fixed range) | Sigmoid or tanh activation in graph neural networks |
+| | | **Exact** | **Exact** | **Exact** | **Approximate** — GNNs use various nonlinearities (ReLU, etc.); tanh is one standard option, not the only one |
+| **E** | Composite: E(x,ρ) = C(R(B(A(x)),ρ)); on 1D, R = 0 so E = C(B(A(x))) | Renormalization-group-like pipeline: discrete gradient → coarse-grain → bound | Differencing then smoothing: Δx → MA(w) → bound; standard preprocessing pipeline | Filter cascade: high-pass (A) → lowpass (B) → limiter (C); bandpass-then-clip | One message-passing GNN layer: aggregate neighbor differences → smooth → activate |
+| | | **Exact** | **Exact** | **Exact** | **Approximate** — GNN layers include learned weights and architecture-specific choices beyond the E pipeline |
+
+**Notes on the R operator.** R is trivially zero on 1D data (Section 3.5) and plays no role in this paper's analysis. It is included in the table for completeness because the full ABRCE framework operates on arbitrary topologies. The cross-domain entries for R become relevant when the framework is applied to 2D+ data — spatial fields, network flows, or multi-dimensional lattices — where circulation is non-trivial.
+
+**Domains omitted.** Ecology and evolutionary dynamics were considered and excluded. While superficial analogies exist (e.g., A as species interaction gradients, C as carrying-capacity saturation), none rise above the Speculative level without domain-specific validation that we have not performed. Four solid domains with defensible cells are preferable to six with weak ones.
+
+---
+
 ## 6. References
 
 [1] Sacco, F., Sakthivadivel, D. A. R., & Levin, M. (2026). Topological constraints on self-organization in locally interacting systems. *Phil. Trans. R. Soc. A*, 384: 20250011.
