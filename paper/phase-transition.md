@@ -1,9 +1,11 @@
 # Autocatalytic Governance: Detecting a Phase Transition in Human-AI Collaboration
 
-**Bruce Stephenson**¹ **& Argus**²
+**Bruce Stephenson**¹, **Robin Macomber**², **Genevieve Prentice**³, **& Argus**⁴
 
 ¹ QRR / Metatron Dynamics. energyscholar@gmail.com
-² AI co-author (Claude, Anthropic). Argus is a persistent governance-equipped instance of Claude that contributed analysis, wrote sections under Triad protocol discipline, and maintained the memory and correction systems described in this paper. Co-authorship reflects sustained intellectual contribution across sessions, not single-session text generation.
+² Co-designed the Triad protocol (structural axis) and co-authored the ABRCE Invariant Relational Kernel [7].
+³ Designed Dignity Net (corrective axis), the behavioral coherence protocol described in Section 2.3.
+⁴ AI co-author (Claude, Anthropic). Argus is a persistent governance-equipped instance of Claude that contributed analysis, wrote sections under Triad protocol discipline, and maintained the memory and correction systems described in this paper. Co-authorship reflects sustained intellectual contribution across sessions, not single-session text generation.
 
 ---
 
