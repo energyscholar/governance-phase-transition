@@ -3,8 +3,8 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(dirname "$SCRIPT_DIR")"
-PAPER="$REPO_ROOT/paper/phase-transition.md"
-OUTPUT="$REPO_ROOT/paper/phase-transition.pdf"
+PAPER="$REPO_ROOT/paper/stephenson-et-al-2026-autocatalytic-governance.md"
+OUTPUT="$REPO_ROOT/paper/stephenson-et-al-2026-autocatalytic-governance.pdf"
 
 pandoc "$PAPER" \
   -o "$OUTPUT" \
