@@ -1,6 +1,6 @@
 # Plan 0361: Phase Transition Paper — Full Triad Rewrite
 
-**Status:** ACTIVE
+**Status:** ACTIVE — Generator firing began 2026-05-20 02:36 AM Pacific
 **Created:** 2026-05-19 (Auditor)
 **Context:** A paper draft titled "Autocatalytic Governance: Detecting a Phase Transition in Human-AI Collaboration" was written in a single session without Triad discipline. The draft has been deleted. This plan captures all knowledge and specifies the Generator rebuild.
 
@@ -18,8 +18,8 @@
 - Small, focused commits (not bulk dumps)
 - Each commit maps to exactly one plan phase (session-coherent)
 - Verification precedes generation (P1, P2 before P3) — ungoverned LLMs generate first, verify never
-- Data and interpretation are separated (P3 skeleton before P4 discussion) — Triad discipline visible in the commit graph
-- Self-correction is structural, not accidental (P6 deliberately weakens claims with multiple comparison correction)
+- Data and interpretation are separated (P3 skeleton before P6 discussion) — Triad discipline visible in the commit graph
+- Self-correction is structural, not accidental (P4 deliberately weakens claims with multiple comparison correction)
 - Positive ACF at lag 1 within phases, sharp decorrelation at phase boundaries
 - The plan lives in `plans/` and is committed before any paper content — Auditor defines criteria before Generator writes
 
@@ -41,9 +41,9 @@
 Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 ```
 
-Example (P6 — the most important commit for credibility):
+Example (P4 — the most important commit for credibility):
 ```
-0361-P6: Statistical tightening — multiple comparison correction
+0361-P4: Statistical tightening — multiple comparison correction
 
 Applied Bonferroni and Benjamini-Hochberg corrections (5 metrics × 270 splits).
 Memory: all 5 breaks survive strict correction (threshold 3.7e-5).
@@ -54,7 +54,7 @@ Cohen's d effect sizes added to Tables 1-2.
 Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 ```
 
-P6 voluntarily weakens the paper's claims. An ungoverned LLM would never do this. This commit is where a skeptical reviewer goes from "interesting" to "credible."
+P4 voluntarily weakens the paper's claims. An ungoverned LLM would never do this. This commit is where a skeptical reviewer goes from "interesting" to "credible."
 
 **Temporal pattern matters too.** Gaps between commits show Auditor review. An ungoverned system commits continuously. The Auditor's review happens in a separate shell in a separate repo — invisible in this repo's history except as a gap between phase commits. Those gaps are evidence of governance.
 
@@ -69,7 +69,7 @@ P6 voluntarily weakens the paper's claims. An ungoverned LLM would never do this
 **Thesis:** LLMs are 1D autoregressive chains, which Levin (Sacco, Sakthivadivel & Levin 2026, Theorem 2 + Proposition 2) proves cannot sustain long-range order. Governance infrastructure that adds topological dimensions breaks this constraint. When governance layers form a Kauffman autocatalytic set (RAF), a phase transition occurs at catalytic closure — detectable blind in the commit history.
 
 **Key theoretical sources (Generator MUST verify against originals, not from memory):**
-- Sacco, Sakthivadivel & Levin (2026). "Topological constraints on self-organization in locally interacting systems." Phil. Trans. R. Soc. A 384: 20250011. Claims: Theorem 2 (1D → no ordered phase), Peierls argument (2D+ → ordered phases possible), Proposition 2 (autoregressive LLMs have 1D topology).
+- Sacco, Sakthivadivel & Levin (2026). "Topological constraints on self-organization in locally interacting systems." Phil. Trans. R. Soc. A 384: 20250011. Claims: Theorem 2 (1D → no ordered phase), Theorem 3 (AR models map to 1D Hamiltonians), Proposition 2 (causally masked decoder-only attention → no ordered phase), Theorem 4 + Proposition 3 (hierarchical cliques → local order), Peierls argument (2D+ → ordered phases possible).
 - Kauffman (1986). "Autocatalytic sets of proteins." J. Theor. Biol. 119(1), 1-24. Claims: RAF definition, phase transition at catalytic closure threshold.
 - Kauffman (1993). The Origins of Order. OUP. Claims: buttons-and-threads model, subcritical→supercritical transition.
 - Hordijk & Steel (2004). "Detecting autocatalytic, self-sustaining sets in chemical reaction systems." J. Theor. Biol. 227(4), 451-461. Claims: maxRAF algorithm (mentioned as future work).
@@ -241,12 +241,16 @@ Output: verification/script-verification-report.md
 **Depends on:** Nothing. Can run in parallel with P0, P1.
 
 **Task:** Verify each citation claim against actual source text:
-- Levin: Theorem 2, Peierls, Proposition 2
-- Kauffman: RAF definition, closure threshold
-- Hordijk & Steel: maxRAF
-- Stephenson & Macomber: ABRCE spec
+- Levin (Sacco, Sakthivadivel & Levin 2026): Theorem 2 (1D no ordered phase), Theorem 3 (AR→1D), Corollary 2 (AR convergence), Proposition 2 (causal masking), Theorem 4 + Proposition 3 (hierarchical cliques). **Source:** PDF at `~/deleteme/argus_screenshots/rsta.2025.0011.pdf` (15 pages, read in full).
+- Kauffman (1986, 1993): RAF definition, closure threshold, buttons-and-threads model. Source: training data (well-established).
+- Hordijk & Steel (2004): maxRAF algorithm formalization. Source: training data.
+- Stephenson & Macomber (2026): ABRCE spec. Source: `~/software/Invariant_Relational_Kernel_ABRCE/README.md`.
+- Peierls (1936): 2D ordered phase argument. Referenced as [37] in Levin. Source: training data (classic result).
+- Landau & Lifshitz (§149): Original 1D no-order proof. Referenced as [36] in Levin. Source: training data (textbook).
 
-**Accept:** Citation-by-citation pass/fail. All claims verified or corrections noted.
+**Precision fix:** The plan says "Proposition 2 (autoregressive LLMs have 1D topology)." This conflates two results. Correctly: Theorem 3 maps AR(ω) models to 1D local Hamiltonians. Proposition 2 proves causally masked decoder-only attention has no ordered phase. These are distinct claims — P2 must distinguish them in the audit.
+
+**Accept:** Citation-by-citation pass/fail. All claims verified or corrections noted. Theorem 3 vs Proposition 2 distinction explicit.
 
 **Handoff:** Auditor task — no Generator handoff. Auditor reads sources and produces audit.
 
@@ -263,61 +267,69 @@ Output: verification/script-verification-report.md
 
 **Structure spec:**
 - Authors: Bruce Stephenson & Argus (with footnote justifying AI co-authorship)
-- Sections 1-4 as outlined in plan
-- Tables 1-2 with VERIFIED numbers from P1 report
-- ACF comparison table
-- ~2000-2500 words
+- **Section 1 (Introduction):** AI coding assistants lack persistence. Every session starts from zero. Research question: does governance infrastructure produce detectable phase transition in development patterns?
+- **Section 2 (Theory):** Three-part argument, each building on the last:
+  (a) Levin chain: Thm 2 (1D → no ordered phase) → Thm 3 (AR → 1D Hamiltonian) → Prop 2 (causal masking → no ordered phase). NOTE: Thm 3 maps the topology, Prop 2 proves the consequence. Do NOT conflate — P2 audit specifies the distinction.
+  (b) Kauffman RAF: autocatalytic sets, phase transition at catalytic closure. Generator chooses framing (buttons-and-threads, formal RAF definition, or both).
+  (c) Novel connection: governance layers as RAF components. Three axes (structural, temporal, corrective). ACS closure table (6/6 catalytic links from plan). Prediction: closure triggers detectable break.
+- **Section 3 (Methods):** Sliding F-test structural break scan. Five metrics (lines_changed, file_count, time_gap, msg_length, AI_fraction). ACF analysis. ABRCE operators. Data sources (4 repos, see Data Summary in plan). Blind detection: break dates found by algorithm, not chosen by analyst.
+- **Section 4 (Results):** Narrative arc: ungoverned baseline → aurasys break detection → relinquishment confirmation → multi-repo convergence. Tables:
+  - **Table 1:** Aurasys structural breaks (5 metrics × break date, F-stat, p-value, pre/post means). Use P1-verified values from SCRIPT 02 or 03 per P1's min_segment recommendation.
+  - **Table 2:** Relinquishment structural breaks (same format). Use P1-verified values.
+  - **Table 3:** ACF comparison (pre/post transition for aurasys; governed vs ungoverned baseline). Include decorrelation lengths.
+- **Section 6 (References):** All cited works. Levin, Kauffman (1986 + 1993), Hordijk & Steel, Peierls, Stephenson & Macomber.
+- ~2500-3000 words (expanded from 2000-2500 to accommodate detailed Theory)
 
-**Accept:** All numbers from P1 verification report. All claims from P2 audit. No discussion or interpretation.
+**Accept:** All numbers from P1 verification report. All claims from P2 audit. Thm 3 vs Prop 2 distinction correct per P2. No discussion or interpretation beyond what the data shows.
 
 **Handoff (≤8 lines):**
 ```
 You are the Generator for 0361-P3.
-Read: ~/software/governance-phase-transition/plans/0361-phase-transition-paper-review.md (full plan)
+Read: ~/software/governance-phase-transition/plans/0361-phase-transition-paper-review.md (full plan, esp. 0361-P3 + "Scientific Claim" + "Data Summary")
 Read: ~/software/governance-phase-transition/verification/script-verification-report.md
 Read: ~/software/governance-phase-transition/verification/theoretical-audit.md
-Write paper/phase-transition.md: Sections 1-4 + References ONLY.
-Use ONLY verified numbers from the verification report. No discussion section yet.
-Authors: Bruce Stephenson & Argus. See plan for structure spec.
+Write paper/phase-transition.md: Sections 1-4 + 6 (References) ONLY. No discussion.
+Section 2 Theory: Levin chain (Thm 3 ≠ Prop 2) → Kauffman RAF → novel ACS closure prediction.
+Section 4 Results: Tables 1-3 with ONLY P1-verified numbers. Narrative: baseline → aurasys → relinquishment → convergence.
+Authors: Bruce Stephenson & Argus.
 ```
 
 ---
 
-### 0361-P4: Discussion + Claims
+### 0361-P4: Statistical Tightening
 
 **UID:** 0361-P4
 **Role:** Generator
-**Idempotent:** Appends/replaces Section 5 (Discussion) + Section 7 (Conclusion) in existing paper. Does not touch Sections 1-4.
-**Depends on:** P3 (paper skeleton exists).
+**Idempotent:** Updates Methods section + Tables 1-2 in paper. Updates scripts if needed.
+**Depends on:** P3 (paper exists), P1 (scripts verified). Can run in parallel with P5.
 
-**Task:** Write Section 5 (Discussion) and Section 7 (Conclusion). This is where confabulation risk is highest — claims must be calibrated.
+**Task:**
+- **Test F-test assumptions** on actual data (not just state them):
+  - Normality: Shapiro-Wilk on pre/post segments for each metric
+  - Homoscedasticity: Levene's test on pre/post segments
+  - Report results. If assumptions violated, note which metrics and whether F-test is robust to the violation (it usually is for large N, but state why).
+- **Apply multiple comparison correction — PER REPO** (split point counts differ):
+  - Aurasys: 5 metrics × (N - 2×min_segment) split points. Use min_segment from P1's recommendation.
+  - Relinquishment: 5 metrics × (924 - 2×min_segment) split points. ~894 splits at min_segment=15 → stricter threshold than aurasys.
+  - Bonferroni threshold = 0.05 / (metrics × splits) per repo.
+  - **Predictions (from unverified plan numbers — use P1's ACTUAL values):** Aurasys: all 5 survive. Relinquishment: likely 2 of 5 (time_gap, AI_fraction).
+  - Also compute **Benjamini-Hochberg (FDR)** — the 5 metrics are correlated measures of the same phenomenon, not independent tests. BH is arguably more appropriate. Report BOTH.
+- **Effect sizes:** Cohen's d for each break (pre vs post segment means). Add column to Tables 1-2.
+- **Minimum segment validity:** Confirm min_segment from P1 gives adequate df for F-test (both segments need n≥15 for CLT; state this).
+- **Update scripts** to output corrected statistics, assumption tests, and effect sizes.
+- **Narrative adjustment:** If relinquishment loses metrics to Bonferroni, revise narrative to honestly reflect which metrics survive and which don't. Generator chooses framing.
 
-**Section 5 subsections:**
-- 5.1 Minimum viable ACS (three AXES, many valid sets — Bruce's correction)
-- 5.2 Why N=1
-- 5.3 Observer effect absent
-- 5.4 Theoretical implications (Levin+Kauffman novel connection)
-- 5.5 Limitations (N=1, user-specific effects untested, multi-participant is future work)
-
-**Section 7:** First documented detection. Practical implication. Theoretical implication. Topology, not intelligence.
-
-**Claims calibration rules:**
-- "First empirical detection" → "first documented"
-- "Mathematical necessity" → only if Levin theorem directly applies (P2 verified)
-- Three AXES, not three SPECIFIC components
-- No overclaiming on what commit metrics prove about code quality
-
-**Accept:** Discussion and conclusion added. Claims calibrated. Auditor reviews before P5.
+**Accept:** A statistician would not flag basic methodology errors. Assumption tests run on actual data (not just stated). Both Bonferroni and BH reported with per-repo thresholds. Effect sizes in tables. Narrative honest about survivors.
 
 **Handoff (≤8 lines):**
 ```
 You are the Generator for 0361-P4.
 Read: ~/software/governance-phase-transition/plans/0361-phase-transition-paper-review.md (section 0361-P4)
-Read: ~/software/governance-phase-transition/paper/phase-transition.md (P3 output)
-Add Section 5 (Discussion) and Section 7 (Conclusion) to existing paper.
-Section 5.5 Limitations: N=1, user-specific effects untested, multi-participant is future work.
-Do NOT modify Sections 1-4. Follow claims calibration rules in plan.
-Three AXES, many valid sets. "First documented" not "first ever."
+Read: ~/software/governance-phase-transition/paper/phase-transition.md
+Read: ~/software/governance-phase-transition/verification/script-verification-report.md (for P1's min_segment recommendation)
+Run Shapiro-Wilk + Levene's on pre/post segments. Report assumption test results.
+Apply Bonferroni (PER REPO — different split counts) and BH. Add Cohen's d to Tables 1-2.
+Use P1's verified values, not plan predictions. Update scripts. Adjust narrative if metrics drop.
 ```
 
 ---
@@ -327,7 +339,7 @@ Three AXES, many valid sets. "First documented" not "first ever."
 **UID:** 0361-P5
 **Role:** Generator
 **Idempotent:** Writes/replaces Supplementary C in paper. Does not touch other sections.
-**Depends on:** P3 (paper exists to append to).
+**Depends on:** P3 (paper exists to append to). Can run in parallel with P4.
 
 **Task:** Build ABRCE domain translation table. Rate each cell:
 - **Exact:** mathematical identity (same operation, different notation)
@@ -342,6 +354,8 @@ Three AXES, many valid sets. "First documented" not "first ever."
 - Remove any cell rated "Speculative" unless caveated explicitly
 - Add a note: "These are not analogies. They are the same operations in different notation."
 - Physics, Statistics, Signal Processing columns should be near-trivial to verify (our home turf). Network Science needs care. Ecology is the highest-risk column.
+
+**PRE-FIRE NOTE:** P5 handoff needs additional annealing before firing. Domain table is highest confab risk after Discussion — Auditor should review P3's actual ABRCE usage and constrain which domains/operators the Generator may include, based on what the paper actually needs rather than what the operator framework could theoretically support.
 
 **Accept:** No speculative cells remain uncaveated. All [AUDITOR_VERIFY] tags resolved. A domain expert in any listed field would not object.
 
@@ -358,32 +372,44 @@ Ecology column is HIGH CONFAB RISK — prune unless you can cite a source.
 
 ---
 
-### 0361-P6: Statistical Tightening
+### 0361-P6: Discussion + Claims
 
 **UID:** 0361-P6
 **Role:** Generator
-**Idempotent:** Updates Methods section + Tables 1-2 in paper. Updates scripts if needed.
-**Depends on:** P3 (paper exists), P1 (scripts verified).
+**Idempotent:** Appends/replaces Section 5 (Discussion) + Section 7 (Conclusion) in existing paper. Does not touch Sections 1-4.
+**Depends on:** P3 (paper skeleton exists), P4 (corrected statistics available for discussion).
 
-**Task:**
-- State F-test assumptions (normality, homoscedasticity) and whether met
-- Apply multiple comparison correction. **Bonferroni prediction:** 5 metrics × ~270 split points = ~1350 tests, threshold 3.7×10⁻⁵. Memory: all 5 survive. Relinquishment: only 2 of 5 survive (time_gap, AI_fraction). Consider Benjamini-Hochberg (FDR) as less conservative alternative — the 5 metrics are correlated measures of the same phenomenon, not independent tests. Report BOTH corrections.
-- Report effect sizes (Cohen's d) alongside p-values in Tables 1-2
-- Verify minimum segment length (n=15) is adequate for F-test validity
-- Update scripts to output corrected statistics if needed
-- If relinquishment loses 3 metrics to correction, revise its narrative from "independent confirmation" to "partial confirmation with 2 metrics surviving strict correction"
+**Task:** Write Section 5 (Discussion) and Section 7 (Conclusion). This is where confabulation risk is highest — claims must be calibrated. P4's corrected statistics determine which claims survive — discussion MUST reference Bonferroni/BH results.
 
-**Accept:** A statistician would not flag basic methodology errors. Both Bonferroni and BH corrections reported. Narrative honest about which metrics survive.
+**Section 5 subsections:**
+- 5.1 Minimum viable ACS (three AXES, many valid sets — Bruce's correction)
+- 5.2 Why N=1
+- 5.3 Observer effect absent
+- 5.4 Theoretical implications (Levin+Kauffman novel connection)
+- 5.5 Limitations (N=1, user-specific effects untested, multi-participant is future work)
+
+**Section 7:** First documented detection. Practical implication. Theoretical implication. Topology, not intelligence.
+
+**Claims calibration rules:**
+- "First empirical detection" → "first documented"
+- "Mathematical necessity" → only if Levin theorem directly applies (P2 verified)
+- Three AXES, not three SPECIFIC components
+- No overclaiming on what commit metrics prove about code quality
+- Relinquishment claims calibrated to P4's corrected results (may be "partial confirmation")
+
+**PRE-FIRE NOTE:** P6 handoff needs additional annealing before firing. Discussion is highest confab risk — Auditor should review P3 output and P4's corrected statistics, then tighten the handoff with specific constraints derived from actual verified numbers before handing to Generator.
+
+**Accept:** Discussion and conclusion added. Claims calibrated against P4's corrected statistics. Auditor reviews before P7.
 
 **Handoff (≤8 lines):**
 ```
 You are the Generator for 0361-P6.
 Read: ~/software/governance-phase-transition/plans/0361-phase-transition-paper-review.md (section 0361-P6)
-Read: ~/software/governance-phase-transition/paper/phase-transition.md
-Update Methods with F-test assumptions. Apply BOTH Bonferroni and Benjamini-Hochberg corrections.
-Update Tables 1-2 with corrected p-values and Cohen's d effect sizes.
-Memory: all 5 should survive Bonferroni. Relinquishment: expect only 2 of 5.
-Update scripts if needed. Adjust relinquishment narrative if metrics drop.
+Read: ~/software/governance-phase-transition/paper/phase-transition.md (P3 output + P4 corrections)
+Add Section 5 (Discussion) and Section 7 (Conclusion) to existing paper.
+Section 5.5 Limitations: N=1, user-specific effects untested, multi-participant is future work.
+Do NOT modify Sections 1-4. Follow claims calibration rules in plan.
+Three AXES, many valid sets. "First documented" not "first ever."
 ```
 
 ---
@@ -414,7 +440,7 @@ The section should contain:
 2. How to test: run the analysis scripts in `scripts/` on this repo's own commit series (extract with `git log --format=...` using the same metrics)
 3. What to look for: compare against the ungoverned baseline (trusty-git-analytics) and the governed repos described in the paper
 4. Link to METHODOLOGY.md in the repo for the full phase map and commit strategy
-5. The self-correction signature: the P6 commit deliberately weakens the paper's claims by applying stricter statistical corrections. An ungoverned system does not self-correct.
+5. The self-correction signature: the P4 commit deliberately weakens the paper's claims by applying stricter statistical corrections. An ungoverned system does not self-correct.
 6. Invitation: "We invite reviewers to apply these techniques to this repo. If the governance system works as claimed, the evidence is in the commits. If it doesn't, that is itself a finding."
 
 **Tone:** Not defensive. Confident. A system that invites scrutiny of its own construction is demonstrating the behavior the paper claims to produce.
@@ -439,14 +465,11 @@ Update README.md if needed. This is the final Generator phase.
 
 ```
 P1 (script verify) ──┐
-P2 (theory audit) ───┤
-                      ├─→ P3 (skeleton) ──→ P4 (discussion) ──→ P7 (polish)
-                      │                       │
-                      └─→ P5 (domain table)   │
-                      └─→ P6 (stats tighten) ─┘
+P2 (theory audit) ───┼─→ P3 (skeleton) ─┬→ P4 (stats tighten) ─→ P6 (discussion) ─┬→ P7 (polish)
+                                         └→ P5 (domain table) ─────────────────────┘
 ```
 
-P1, P2 run in parallel. P3 needs P1+P2. P4 needs P3. P5 and P6 need P3. P7 needs P4+P5+P6.
+P1+P2 parallel. P3 needs P1+P2. P4+P5 parallel (both need P3). P6 needs P3+P4 (corrected stats). P7 needs P5+P6.
 
 ---
 
@@ -457,9 +480,9 @@ P1, P2 run in parallel. P3 needs P1+P2. P4 needs P3. P5 and P6 need P3. P7 needs
 | Script output ≠ claimed numbers | High | P1 catches before P3 writes | P1 |
 | Levin/Kauffman misrepresented | High | P2 checks sources | P2 |
 | Domain table confabulated | Medium | P5 prunes aggressively | P5 |
-| User-specific effects (eidetic memory) | Low | Stated as limitation; future work | P4 |
-| Bonferroni kills significance | Medium | Effect sizes + convergence backup | P6 |
-| "First" claim challenged | Low | "First documented" framing | P4 |
+| User-specific effects (eidetic memory) | Low | Stated as limitation; future work | P6 |
+| Bonferroni kills significance | Medium | Effect sizes + convergence backup | P4 |
+| "First" claim challenged | Low | "First documented" framing | P6 |
 
 ---
 
