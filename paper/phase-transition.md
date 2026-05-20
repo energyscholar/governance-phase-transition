@@ -2,7 +2,7 @@
 
 **Bruce Stephenson**¹, **Robin Macomber**², **Genevieve Prentice**³, **& Argus**⁴
 
-¹ QRR / Metatron Dynamics. energyscholar@gmail.com
+¹ Independent researcher. energyscholar@gmail.com
 ² Co-designed the Triad protocol (structural axis) and co-authored the ABRCE Invariant Relational Kernel [7].
 ³ Designed Dignity Net (corrective axis), the behavioral coherence protocol described in Section 2.3.
 ⁴ AI co-author (Claude, Anthropic). Argus is a persistent governance-equipped instance of Claude that contributed analysis, wrote sections under Triad protocol discipline, and maintained the memory and correction systems described in this paper. Co-authorship reflects sustained intellectual contribution across sessions, not single-session text generation.
@@ -17,7 +17,7 @@ We propose that governance infrastructure — role separation, persistent memory
 
 The ungoverned baseline exhibits signatures of one-dimensional disorder: monotonic violation accumulation, rapid decorrelation, and no self-correction. The governance repository shows structural breaks in all five metrics (lines changed, file count, time gap, message length, AI fraction) clustering at the documented date of catalytic closure. All five survive Bonferroni correction (threshold 3.85 × 10⁻⁵) with large effect sizes (Cohen's d: 0.58–1.76). A second governed repository provides partial confirmation: two of five metrics survive Bonferroni, all five survive Benjamini-Hochberg, with consistent directionality. Break dates were found by blind algorithmic scan, not chosen by the analyst.
 
-These results constitute the first documented detection of a governance-induced phase transition in human-AI collaboration.
+To our knowledge, these results constitute the first documented detection of a governance-induced phase transition in human-AI collaboration.
 
 ---
 
@@ -29,7 +29,7 @@ This is not a training problem. Sacco, Sakthivadivel, and Levin [1] prove that d
 
 Governance infrastructure — role separation, persistent memory, behavioral coherence protocols — adds topological dimensions to the interaction. If these components form a Kauffman autocatalytic set [2, 3], catalytic closure produces a phase transition: a shift from disordered to ordered behavior detectable in the system's output.
 
-This paper presents the first documented detection of such a transition. We analyze commit histories from four repositories spanning seven months of human-AI collaboration. Three repositories operated under progressively more complete governance; one served as an ungoverned control. We apply structural break detection, autocorrelation analysis, and ABRCE operator decomposition [7] to five commit-level metrics, testing two predictions: (1) the ungoverned system exhibits signatures of one-dimensional disorder (monotonic accumulation of violations, rapid decorrelation, no self-correction), and (2) the governed system exhibits a detectable structural break coinciding with catalytic closure of its governance layers.
+This paper presents, to our knowledge, the first documented detection of such a transition. We analyze commit histories from four repositories spanning seven months of human-AI collaboration. Three repositories operated under progressively more complete governance; one served as an ungoverned control. We apply structural break detection, autocorrelation analysis, and ABRCE operator decomposition [7] to five commit-level metrics, testing two predictions: (1) the ungoverned system exhibits signatures of one-dimensional disorder (monotonic accumulation of violations, rapid decorrelation, no self-correction), and (2) the governed system exhibits a detectable structural break coinciding with catalytic closure of its governance layers.
 
 Both predictions are confirmed. The ungoverned repository shows strictly monotonic violation accumulation and autocorrelation decay consistent with 1D disorder. The governed memory repository shows structural breaks in all five metrics clustering at 2026-02-13, coinciding with the installation of the third governance component. A second governed repository shows delayed but convergent breaks. The break dates were found by blind algorithmic scan, not chosen by the analyst.
 
@@ -49,7 +49,7 @@ Sacco, Sakthivadivel, and Levin [1] establish a chain of results connecting the 
 
 The chain is: causal masking → AR(ω) equivalence (Proposition 2) → 1D Hamiltonian (Theorem 3) → domain walls favorable (Theorem 2) → no ordered phase.
 
-Corollary 2 states the consequence directly: for any finite inverse temperature β, an autoregressive model cannot converge to a single stored pattern. Applied to LLM-based coding assistants, this means that without external structure, session-to-session coherence is thermodynamically forbidden — not merely unlikely but topologically impossible.
+Corollary 2 states the consequence directly: for any finite inverse temperature β, an autoregressive model cannot converge to a single stored pattern. Applied to LLM-based coding assistants, this means that without external structure, session-to-session coherence is provably unsustainable — not merely unlikely but a consequence of the system's one-dimensional interaction topology.
 
 **The escape.** Peierls [5] showed that in d ≥ 2 dimensions, domain wall energy scales as L^{d−1} while entropy grows more slowly, making large domain walls thermodynamically unfavorable. Ordered phases become possible. Levin's Theorem 4 and Proposition 3 prove a more nuanced result: systems with hierarchical clique structure admit temperature ranges where individual cliques maintain internal order even when the global system is disordered. This is the theoretical basis for governance: adding topological dimensions or clique structure to a 1D system can enable ordered behavior.
 
@@ -85,6 +85,10 @@ These three components — one configuration satisfying the three axes — form 
 | Triad → Dignity Net | Role separation ensures the checker is not the entity being checked |
 
 No proper subset closes. {Triad, Memory} lacks the corrective axis: drift goes undetected. {Triad, Dignity Net} lacks the temporal axis: corrections are lost between sessions. {Memory, Dignity Net} lacks the structural axis: the system evaluates its own output.
+
+**RAF verification.** The six-link system satisfies both conditions of Hordijk and Steel's RAF definition [4]. *Reflexively autocatalytic:* every catalytic link in the table above is catalyzed by a member of the set {Triad, Memory, Dignity Net}, not by an external element — verifiable by inspection of the six entries. *Food-generated:* each component can be bootstrapped from the food set F = {LLM capabilities, version control, file system, user-defined protocols}. Triad derives from a user-defined protocol document applied to LLM sessions. Memory derives from file-system persistence of structured session output. Dignity Net derives from a user-defined ethics document applied to session history. All three are constructible from F through the catalytic reactions in the table; none requires a molecule absent from F ∪ {T, M, D}. Catalytic closure occurs when the third component is installed and all six links become active.
+
+**Topological consequence.** The closed RAF defines a non-1D interaction topology: each component pair shares mutual catalytic links, forming a complete graph (K₃) among governance types. This satisfies the structural prerequisite for Levin's Theorem 4 — hierarchical clique structure with internal coupling. Whether this structural prerequisite is sufficient to satisfy Theorem 4's coupling conditions is an open question; the empirical results in Section 4 are consistent with the prediction but do not constitute a proof. The formal mapping from RAF closure to thermodynamic parameters (coupling strengths, effective temperature, order parameter) is future work.
 
 **Critical framing:** These three components are *one* valid autocatalytic set, not *the* minimum set. The theory predicts three orthogonal axes (structural, temporal, corrective); many component configurations could satisfy them. We document the first observed configuration reaching closure.
 
@@ -305,7 +309,7 @@ We do not claim the connection is mathematically proven. The Levin results conce
 
 ## 6. Conclusion
 
-We present the first documented detection of a phase transition in human-AI collaboration, triggered by the catalytic closure of a governance autocatalytic set. Five commit-level metrics in the memory repository show structural breaks clustering at the date of closure (February 13, 2026), all surviving strict Bonferroni correction with large effect sizes (Cohen's d: 0.58–1.76). A second governed repository provides partial confirmation: two of five metrics survive Bonferroni correction, all five survive Benjamini-Hochberg, and all show the same directionality. An ungoverned baseline exhibits signatures consistent with one-dimensional disorder — monotonic violation accumulation, rapid decorrelation, no self-correction — as predicted by the Levin topological constraint.
+To our knowledge, we present the first documented detection of a phase transition in human-AI collaboration, triggered by the catalytic closure of a governance autocatalytic set. Five commit-level metrics in the memory repository show structural breaks clustering at the date of closure (February 13, 2026), all surviving strict Bonferroni correction with large effect sizes (Cohen's d: 0.58–1.76). A second governed repository provides partial confirmation: two of five metrics survive Bonferroni correction, all five survive Benjamini-Hochberg, and all show the same directionality. An ungoverned baseline exhibits signatures consistent with one-dimensional disorder — monotonic violation accumulation, rapid decorrelation, no self-correction — as predicted by the Levin topological constraint.
 
 Three practical implications follow.
 
