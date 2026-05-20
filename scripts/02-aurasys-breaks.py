@@ -16,7 +16,11 @@ import numpy as np
 from scipy import stats
 from datetime import datetime
 
-with open('/home/bruce/software/aurasys-memory/commit-series-aurasys.json') as f:
+import os
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT = os.path.dirname(SCRIPT_DIR)
+
+with open(os.path.join(REPO_ROOT, 'data', 'aurasys', 'commit-series.json')) as f:
     commits = json.load(f)
 
 N = len(commits)

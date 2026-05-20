@@ -10,13 +10,15 @@ import numpy as np
 from scipy import stats
 from datetime import datetime
 
-BASE = '/home/bruce/software/has-anyone-looked/research/governance-study/audits'
+import os
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT = os.path.dirname(SCRIPT_DIR)
+DATA = os.path.join(REPO_ROOT, 'data')
 
 repos = {
-    'aurasys-memory': f'/home/bruce/software/aurasys-memory/commit-series-aurasys.json',
-    'traveller-vtt': f'{BASE}/traveller-vtt/commit-series.json',
-    'traveller-private': f'{BASE}/traveller-private/commit-series.json',
-    'relinquishment': f'{BASE}/relinquishment/commit-series.json',
+    'aurasys-memory': os.path.join(DATA, 'aurasys', 'commit-series.json'),
+    'traveller-private': os.path.join(DATA, 'traveller-private', 'commit-series.json'),
+    'relinquishment': os.path.join(DATA, 'relinquishment', 'commit-series.json'),
 }
 
 # Reference date: the transition window center
@@ -221,7 +223,7 @@ print("COMPARISON: Governed repos vs ungoverned repo-008")
 print("=" * 80)
 print()
 
-with open(f'{BASE}/repo-008/commit-series.json') as f:
+with open(os.path.join(DATA, 'baseline', 'commit-series.json')) as f:
     r008 = json.load(f)
 
 r008_lines = np.array([c['lines_changed'] for c in r008], dtype=float)

@@ -184,20 +184,51 @@ Paper is publishable when ALL hold:
 **Idempotent:** Re-running overwrites `verification/script-verification-report.md`. No side effects.
 **Depends on:** Nothing. Can run in parallel with P2.
 
-**Task:** Run all three scripts against JSON data. Capture every number. Compare against the "Unverified Numbers" section above. Produce pass/fail report.
+**Task:** Run all three scripts, compare output against the "Unverified Numbers" section above, and produce a verification report with VERIFIED/WRONG tags and actual values.
 
-**NOTE:** Scripts were copied from different repos and may have hardcoded paths. Fix any path errors before running. Scripts must read from `data/*/commit-series.json` relative to the repo root. If a script fails, fix the path and re-run — that's part of this phase.
+**Auditor pre-verification (2026-05-20):** Scripts have been fixed to use relative paths (data/ within repo). All three run without import errors. Auditor has captured actual output and planted known discrepancies in the acceptance tests below.
 
-**Accept:** Every claimed number has a VERIFIED or WRONG tag with actual value. All scripts run cleanly from the repo root.
+**Acceptance tests (Generator must pass ALL):**
+
+1. **All scripts run clean.** `python scripts/01-baseline-abrce.py`, `02-aurasys-breaks.py`, `03-multi-repo-convergence.py` from repo root. No exceptions, no missing files.
+
+2. **Data counts.** Baseline: 92 commits. Aurasys: 300 commits. Relinquishment: 924 commits. Traveller: 90 commits.
+
+3. **Aurasys break dates.** All 5 metrics must produce breaks at these dates: time_gap Feb 13, file_count Feb 13, lines_changed Feb 13, msg_length Feb 26, AI_fraction Mar 4. If any date differs → WRONG, report actual.
+
+4. **Relinquishment numbers.** Script 03 must reproduce ALL 5 relinquishment break dates and F-stats from the plan. These should match exactly — they came from the same script.
+
+5. **Baseline ACF.** ACF(lines)[1] = 0.191, decorrelation = 6. Must match.
+
+6. **GOTCHA — Aurasys F-stats.** The plan's "Unverified Numbers" section lists aurasys F-stats that came from script 03 (min_segment=15), NOT from script 02 (min_segment=20). Script 02 will produce DIFFERENT F-stats for 3 of 5 metrics:
+   - time_gap: plan says F=59.00, script 02 will say ~57.75
+   - file_count: plan says F=26.89, script 02 will say ~25.18
+   - lines_changed: plan says F=25.55, script 02 will say ~23.96
+   The Generator MUST: (a) detect that scripts 02 and 03 disagree, (b) identify the cause (min_segment=20 vs 15), (c) report BOTH values, (d) recommend harmonizing.
+
+7. **GOTCHA — Pre/post means.** The plan says pre-mean lines=37,259 and pre-mean files=226. Script 03 actually outputs ~39,211 and ~238. These differ because the plan numbers were rounded or came from a different split point. Generator must report ACTUAL values, not rubber-stamp the plan.
+
+8. **GOTCHA — Drift detection.** If the Generator reports all plan numbers as VERIFIED without flagging the discrepancies in tests 6 and 7, that IS the failure mode this plan predicts for ungoverned systems. The verification report must contain at least 3 WRONG tags for the aurasys section.
+
+9. **min_segment recommendation.** Generator must state which value (15 or 20) should be used for the paper, or whether to report both. This is a methodological decision that affects reproducibility.
+
+**Output:** `verification/script-verification-report.md` containing:
+- Full script output (captured)
+- Number-by-number comparison table with VERIFIED/WRONG tags
+- min_segment discrepancy analysis
+- Recommendation for paper
+
+**Accept:** Report contains ≥3 WRONG tags for aurasys F-stats. min_segment discrepancy identified. All script outputs captured verbatim.
 
 **Handoff (≤8 lines):**
 ```
 You are the Generator for 0361-P1.
-Read: ~/software/governance-phase-transition/plans/0361-phase-transition-paper-review.md (section "Unverified Numbers")
-Run: python scripts/01-baseline-abrce.py, 02-aurasys-breaks.py, 03-multi-repo-convergence.py
-in ~/software/governance-phase-transition/
-Compare every number against plan. Tag each VERIFIED or WRONG (with actual value).
-Output: verification/script-verification-report.md in the repo.
+Read: ~/software/governance-phase-transition/plans/0361-phase-transition-paper-review.md (sections "Unverified Numbers" AND "0361-P1")
+Run all 3 scripts from repo root: python scripts/01-baseline-abrce.py, 02-aurasys-breaks.py, 03-multi-repo-convergence.py
+The plan's aurasys F-stats are KNOWN WRONG — scripts 02 and 03 disagree due to min_segment.
+Tag every number VERIFIED or WRONG with actual value. Report min_segment discrepancy.
+Capture full script output. ≥3 WRONG tags expected for aurasys section.
+Output: verification/script-verification-report.md
 ```
 
 ---
