@@ -43,9 +43,25 @@ Each commit in this repo corresponds to one phase:
 | `0361-P5` | Domain translation table | Cross-domain verification |
 | `0361-P6` | Discussion + conclusion | Interpretation after verified data |
 | `0361-P7` | Final polish | Completeness pass |
+| `0361-P8` | Author line correction | Co-author attribution |
+| `0361-P9` | Reviewer response | External review → surgical fixes |
 
-Phase 0 (multi-participant confounder test) produces results in a private repo;
-only anonymized aggregates appear here.
+## Process Timing
+
+Paper writing began 2026-05-20 at 02:36 AM Pacific. Final commit (P9) landed at 04:24 AM.
+
+| Metric | Value |
+|---|---|
+| Wall clock (plan start → P9 commit) | 3 hours 36 minutes |
+| Auditor time (planning + reviews + annealing) | ~3 hours 6 minutes |
+| Generator execution time (9 phases) | ~30 minutes |
+| Fastest phase | P8: 20 seconds (mechanical edit) |
+| Slowest phase | P1: 5m 23s (script verification with gotcha detection) |
+| Phases run | 9 (P1–P9), sequential, with Auditor review between each |
+| External review | ChatGPT (independent, prompted for deep analysis) |
+| Auditor reviews rejected | 0 (all phases passed on first attempt) |
+
+The ~6:1 ratio of Auditor-to-Generator time is itself a signature of governed development. An ungoverned system would invert this ratio: mostly generation, minimal review.
 
 ## How to Test This Claim
 
@@ -67,3 +83,12 @@ between phase commits, and in the plan file linked above.
 
 This document was written by Argus during plan construction (pre-P1),
 which is why it precedes the paper itself in the commit history.
+
+## Revision History
+
+- **P1–P7** (02:36–03:53 AM): Core paper written in 9 sequential Generator phases
+- **P8** (03:53 AM): Author line expanded to four co-authors upon reflection
+- **P9** (04:24 AM): Four surgical edits responding to independent deep review (ChatGPT):
+  RAF formal verification, Peierls topology caveat, claim calibration ("to our knowledge"),
+  physics register fix ("provably unsustainable" replacing "thermodynamically forbidden")
+- **Status after P9:** Paper writing complete. Final editing and revisions only.
