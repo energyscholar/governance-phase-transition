@@ -8,6 +8,7 @@ OUTPUT="$REPO_ROOT/paper/stephenson-et-al-2026-autocatalytic-governance.pdf"
 
 pandoc "$PAPER" \
   -o "$OUTPUT" \
+  --resource-path="$REPO_ROOT/paper" \
   --pdf-engine=lualatex \
   -V geometry:margin=1in \
   -V fontsize=11pt \

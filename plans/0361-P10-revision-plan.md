@@ -43,11 +43,14 @@ The paper's core argument is sound. The issues are:
 | R12 | 2.1 | Engineers will read "no order" as "LLMs worthless" | Add within-session clarification |
 | R13 | Throughout | External repo analysis too prominent | Trim refs, fold into methods validation |
 | R16 | 3.2 | Only 5 metrics; should use all extractable data | Add deletions_fraction, message_structure, path_entropy |
-| R18 | Tables | 8-column tables unreadable in PDF | Simplify columns or render as figures |
 | R19 | References | Vaswani et al. (2017) missing | Add citation |
+| R28 | Tables | Tables cramped, unclear in PDF (supersedes R18) | Split into 2 tables (one per repo), 6 cols: metric, break, F, p-perm, Bonf, BH |
+| R29 | New figure | No visual representation of topology argument | 1D chain vs 3D orthogonal K₃ — side-by-side topology comparison figure |
+| R30 | Appendix | No guidance for AI-assisted reading of the paper | Appendix: 3 sequential LLM prompts for deep paper analysis (prep → theory → review) |
 | R23 | Intro | Practical finding not mentioned until Conclusion | Add to Introduction |
 | R24 | 2.3/Discussion | "Behavioral coherence" sounds like HR; function is feedback control | Reframe with control theory vocabulary |
 | R27 | New | No replication guidance | Add section: replicate from our data + replicate from scratch |
+| R31 | Data | Raw data not packaged for public access | Zip all data/, README with schema, paper links to repo URL. Private repo data = extracted metrics |
 
 ### Medium (9)
 
@@ -145,27 +148,63 @@ The paper's core argument is sound. The issues are:
 
 ---
 
-### P10-3: Structural Reorganization (Sections 3, 4, Supplementary)
+### P10-3a: Structural Reorganization (skeleton change)
 
-**Depends on:** P10-1 (need 8-metric data for tables)
-**Items:** R1, R13, R14, R15, R16-text, R25
+**⚠ ANNEALING NOTE:** The original P10-3 was a single 86% confidence phase with hidden dependencies between 6 sub-tasks spanning Sections 3, 4, and Supplementary. Three failure modes: (1) section renumbering breaks cross-references, (2) ABRCE rewrite is an intellectual task that doesn't benefit from being bundled with mechanical edits, (3) table construction depends on P10-1 data but structure depends on nothing. Split into P10-3a/3b/3c to isolate these failure modes. Each sub-phase prompt needs fresh annealing at runtime — the paper's text will have changed from P10-2 by the time 3a runs.
+
+**Depends on:** P10-2 (theory text should be settled before structural moves)
+**Items:** R13, R14, R15
+**Scope:** Mechanical restructuring only. No intellectual content changes.
 
 **Changes:**
-1. Section 3.1: Restructure to 2 primary repos (aurasys + relinquishment). External repos become a methods-validation paragraph: "We validated the detection tools on 8 ungoverned open-source repos [list in Supplementary G]. All 8 showed 1D disorder signatures, confirming the tools detect the predicted pattern." (R15, R13, R14)
-2. Section 3.2: List all 8 metrics with brief descriptions. Add paragraph explaining why commit metrics should detect a regime change — honest framing, not thermodynamic claims. (R16-text, R25)
-3. Section 3.5: Rewrite ABRCE intro. Define all 5 operators (A, B, R, C, E) with representation types. Explain R=0 on 1D is the ABRCE-level statement of the Levin result. Reference Supplementary C for cross-domain dictionary. (R1)
-4. Section 4.1: Move ungoverned baseline analysis to Supplementary G (tool validation). Primary Results begin at current 4.2. (R15)
-5. Update Tables 1-2: 8 metrics, simplified columns (metric, break date, p, Bonf/BH pass). Move pre/post means and Cohen's d to prose. (R18)
-6. Address ACF non-result directly in 4.4 (R21)
+1. Section 3.1: Restructure to 2 primary repos (aurasys + relinquishment). Replace the 4-repo table with a 2-row table. Add methods-validation paragraph: "We validated the detection tools on 8 ungoverned open-source repos [list in Supplementary G]. All 8 showed 1D disorder signatures, confirming the tools detect the predicted pattern." (R15, R13)
+2. Consistent repo naming throughout (R14): pick one convention (descriptive + real name)
+3. Section 4.1: Move entire ungoverned baseline analysis to new Supplementary G: "Tool Validation on Ungoverned Repositories"
+4. Renumber: current 4.2→4.1, 4.3→4.2, 4.4→4.3
+5. Update ALL cross-references (Discussion, Limitations, Conclusion) that reference "the ungoverned baseline" or "Section 4.1"
 
-**Acceptance:** 2-repo primary structure. 8 metrics in tables. ABRCE fully explained. Section 4.1 moved. Tables readable.
+**Acceptance:** 2-repo primary structure. Section 4 renumbered. All cross-references updated. No broken references. No content changes to ABRCE, metrics list, or tables (those are 3b/3c).
+
+---
+
+### P10-3b: ABRCE Rewrite (Section 3.5)
+
+**Depends on:** P10-3a (needs stable section numbering)
+**Items:** R1
+**Scope:** Rewrite one section. Intellectual task requiring deep domain understanding.
+
+**Changes:**
+1. Replace current Section 3.5 with full 5-operator introduction:
+   - A (Abstraction): NodeField→EdgeField. Pairwise differences.
+   - B (Binding): EdgeField→EdgeField. Local symmetric accumulation.
+   - R (Circulation): EdgeField × ℝ → EdgeField. **CRITICAL:** R is trivially zero on 1D data. This is the ABRCE-level statement of the Levin result — no circulation means no feedback loops, no non-trivial topology. R≠0 requires at least 2D.
+   - C (Coherence): EdgeField→EdgeField. Bounded output in (-1, 1).
+   - E (Composite): E(x) = C(R(B(A(x)),ρ)). On 1D, R=0, so E collapses to C(B(A(x))).
+2. Add cross-domain statement: operators are domain-neutral by construction — same math describes lattice gradients, time-series first differences, signal processing filter cascades, graph neural network message-passing. Reference Supplementary C.
+
+**Acceptance:** All 5 operators defined with representation types. R=0 significance explicitly connected to Levin. Cross-domain dictionary referenced. No other sections modified.
+
+---
+
+### P10-3c: Metrics, Tables, and ACF (Sections 3.2, 4.x)
+
+**Depends on:** P10-3a (needs stable structure) + P10-1 (needs 8-metric data)
+**Items:** R16-text, R25, R28, R21
+**Scope:** Data presentation. Reads P10-1 verification report, builds tables and prose.
+
+**Changes:**
+1. Section 3.2: List all 8 metrics with brief descriptions. Add: "We report all 8 rather than selecting those that produce significant breaks — the theory predicts a regime change, and metrics that do not break are informative null results." Add honest paragraph (R25) about why metrics detect transition.
+2. Tables: Build 2 clean tables (R28), one per repo. Each: 6 columns (Metric | Break Date | F | p (perm) | Bonf | BH) × 8 rows. Pre/post means and Cohen's d in prose after each table. Use data from `verification/P10-1-eight-metrics.md`.
+3. Address ACF non-result (R21): distribution change, not correlation change. The structural breaks detect a shift in commit-size distribution (bulk dumps→focused commits), not sequential dependence.
+
+**Acceptance:** All 8 metrics listed in 3.2. Two tables (one per repo), 6 columns each. ACF addressed. All numbers sourced from P10-1 verification report.
 
 ---
 
 ### P10-4: Abstract, Introduction, Discussion, Conclusion, Replication
 
-**Depends on:** P10-2, P10-3 (final structure and framing)
-**Items:** R2, R3, R4, R6, R7, R8, R9, R10, R11, R23, R27
+**Depends on:** P10-3b, P10-3c (all structural and data work settled)
+**Items:** R2, R3, R4, R6, R7, R8, R9, R10, R11, R23, R27, R30
 
 **Changes:**
 1. **Abstract** (R8): Add before final sentence: "The detection uses only commit metadata, requires no access to code contents, and is deployable as a blind organizational diagnostic."
@@ -181,460 +220,144 @@ The paper's core argument is sound. The issues are:
 5. **Conclusion** (R10): Drop straw man in ¶3. Keep topology reframe.
 6. **Replication section** (R27): Add as Section 5.6 or Supplementary. Two options: computational replication (verify our numbers) and independent replication (test the theory). See Section 3 of this plan for content.
 7. **References** (R19): Add Vaswani et al. (2017).
+8. **Appendix: AI-Assisted Reading Prompts** (R30): Three sequential prompts for getting an LLM to deeply analyze this paper. The Sacco & Levin team (our primary audience for outreach) makes minimal use of AI — they won't know that dropping a paper into ChatGPT gives a shallow skim, but three careful preparation prompts produce genuine analysis. Include:
+   - **Prompt 1 (Levin preparation):** "Read Sacco, Sakthivadivel & Levin 2026. Summarize: (a) the theorem chain from causal masking to no-ordered-phase, (b) how topology determines whether self-organization is possible, (c) what Proposition 2 says about decoder-only transformers specifically."
+   - **Prompt 2 (Kauffman preparation):** "Read Kauffman 1986 on autocatalytic sets and Hordijk & Steel 2004 on RAF formalism. Summarize: (a) what catalytic closure means, (b) how a system transitions from subcritical to supercritical, (c) the formal conditions for a set to be reflexively autocatalytic and food-generated."
+   - **Prompt 3 (deep review):** "Now read this paper. For each major claim, trace the argument chain back to the theoretical foundations you just studied. Identify: (a) where the authors' mapping from theory to application is rigorous, (b) where it requires assumptions not proven, (c) what would falsify the central claim."
 
-**Acceptance:** Abstract has practical finding. Opening sentence fixed. Limitations trimmed from 6 to 3. Corrective axis subsection present. Replication guidance present. Vaswani cited.
+**Acceptance:** Abstract has practical finding. Opening sentence fixed. Limitations trimmed from 6 to 3. Corrective axis subsection present. Replication guidance present. Vaswani cited. AI reading prompts in appendix.
 
 ---
 
 ### P10-5: Figures
 
-**Depends on:** P10-1 (data), P10-3 (final structure)
-**Items:** R18, R20
+**Depends on:** P10-1 (data), P10-4 (final paper structure)
+**Items:** R20, R29
 
-**Deliverables:**
-1. **Figure 1: Timeline.** X-axis = time (Nov 2025 – May 2026). Mark governance installations (Triad Dec 2025, Memory ongoing, DN Feb 13 2026). Mark detected break dates with arrows. Color-code pre/post regimes. Show both repos.
-2. **Figure 2: Metric comparison.** Before/after for 2-3 most dramatic metrics (time_gap, file_count, lines_changed). Box plots or bar charts with error bars. Pre-transition vs post-transition.
-3. **Figure 3: ACS schematic.** Three nodes (Triad, Memory, DN). Six directed edges with labels. K₃ topology visible. Food set shown as input arrows.
-4. **Build script:** Python/matplotlib, deterministic, committed to `scripts/`.
+**Design rationale:** Three figures, three jobs. Each answers one question the reader asks at a specific point in the paper. No figure is decorative — each replaces prose.
 
-**Acceptance:** Three figures render cleanly in PDF. Each referenced in paper text.
+**Figure 1: "Why does topology matter?"** (Section 2, after intuitive summary)
+- **Purpose:** Make the theoretical argument visible before a single theorem. An engineer who reads only this figure should understand: 1D chain = unstable (domain walls break order), K₃ governance = stable (mutual reinforcement maintains order). The figure IS the abstract in visual form.
+- **Left panel — 1D chain:** Reader should SEE instability. Nodes on a line. Domain walls as visible breaks where order collapses. Chain should look fragile. Key annotation: domain walls cost O(1) energy, gain O(log N) entropy — disorder always wins. This is Levin Theorem 2 in one picture.
+- **Right panel — 3D orthogonal K₃:** Reader should SEE stability. Three bounded axes (Structural, Temporal, Corrective) from a common origin in isometric projection. K₃ complete graph connects endpoints — six directed catalytic links with brief labels. Food set enters from below. Structure should look robust.
+- **Rendering:** Isometric-style 2D drawing (manual coordinate placement with matplotlib patches/arrows), NOT mplot3d. If isometric is too cluttered, fall back to equilateral triangle with axis labels. Visual clarity trumps dimensional accuracy.
+
+**Figure 2: "When did the transition happen?"** (Section 4, after repo description)
+- **Purpose:** Show temporal coincidence — something changed at exactly the moment the third axis was installed. This is the empirical core.
+- **Content:** X = date (Nov 2025 – May 2026). Y = time_gap (minutes since previous commit — the most dramatic metric, 6,328→486). One dot per commit. Color: pre-transition red, post-transition blue. Vertical dashed lines at governance installations (Triad, DN/closure). Detected break date as distinct marker. The visual cliff at the break date tells the story.
+- **Why time_gap:** Largest effect size, most intuitive interpretation (long gaps = bursty, short = disciplined). Reader sees the regime change without understanding statistics.
+
+**Figure 3: "How big is the effect?"** (Section 4, after tables)
+- **Purpose:** Show this isn't a subtle statistical artifact — it's an order-of-magnitude shift across multiple independent metrics. Tables give numbers; this figure gives visceral impact.
+- **Content:** 3 subplots, one per metric (time_gap, lines_changed, file_count). Pre (red) vs post (blue) box plots. Log scale if needed. Pre/post mean values labeled. Reader sees massive effect sizes across multiple dimensions.
+- **Why these 3:** Most intuitive (engineers understand gap, size, file count), most dramatic (order-of-magnitude shifts). Other metrics in prose.
+
+**Build script:** `scripts/05-generate-figures.py`. matplotlib + numpy only. Deterministic. 300 DPI PNG to `paper/figures/`. No matplotlib defaults (remove unnecessary spines, ticks, gridlines). Publication-quality.
+
+**Acceptance:** Three PNGs render in PDF. Each at correct paper location. Fig 1 conveys 1D→K₃ without theorems. Fig 2 shows temporal coincidence. Fig 3 shows effect magnitude.
 
 ---
 
 ## 5. Execution Order
 
 ```
-P10-1 (scripts)
+P10-1 (scripts — get the data first)
   ↓
-P10-2 (theory) ←— can run parallel with P10-3 if P10-1 done
-P10-3 (structure + tables)
+P10-2 (theory — text only, no data dependency, but run after P10-1
+        so metric language is informed by results)
   ↓
-P10-4 (abstract, intro, discussion, conclusion, replication)
+P10-3a (structural reorg — skeleton change, moves sections, renumbers)
   ↓
-P10-5 (figures)
+P10-3b (ABRCE rewrite — intellectual task, needs stable section numbers)
+P10-3c (metrics/tables/ACF — needs P10-3a structure + P10-1 data)
+  ↓ (both must complete before P10-4)
+P10-4 (abstract, intro, discussion, conclusion, replication, appendix)
+  ↓
+P10-5 (figures — needs P10-1 data + final paper structure)
   ↓
 Rebuild PDF → Final review
 ```
 
-P10-2 has no data dependencies and could run before P10-1, but its text may need
-adjustment once we know which of the 8 metrics break. Safer to run after P10-1.
+**Dependency notes:**
+- P10-1, P10-2, P10-3a have no mutual dependencies but are ordered for safety
+- P10-3b and P10-3c are independent of each other (different sections), both need P10-3a
+- P10-3c also needs P10-1 data — verified met since P10-1 runs first
+- P10-4 needs ALL prior phases settled — it writes the framing around everything
+- P10-5 needs data (P10-1) and final structure (P10-4 done)
+- **Each P10-3x prompt needs fresh annealing at runtime** — paper text will have shifted
 
 ---
 
 ## 6. Generator Prompts
 
-### P10-1 Prompt (95% confidence)
+All detail lives in this plan file (Section 4). Prompts just point the Generator here.
 
+### P10-1 (95%)
 ```
 You are the Generator for 0361-P10-1.
-Read: ~/software/governance-phase-transition/plans/0361-P10-revision-plan.md (Section 4, P10-1)
-Read: ~/software/governance-phase-transition/scripts/ (all 4 scripts for patterns)
-
-TASK: Add 3 new metrics to the analysis pipeline and add a permutation test.
-
-NEW METRICS (add to all scripts that process commit data):
-1. deletions_fraction: lines_deleted / lines_changed (0 if lines_changed=0).
-   Requires parsing git numstat: additions and deletions separately.
-   Tests: monotonic accumulation (all adds, no deletes) vs self-correction.
-2. message_structure: binary. 1 if commit message matches governance pattern
-   (regex: starts with /^\d{4}-P\d/ or contains "Co-Authored-By: Claude").
-   0 otherwise. Tests: governance artifact visibility in metadata.
-3. path_entropy: Shannon entropy of the set of directory paths modified.
-   H = -sum(p_i * log2(p_i)) where p_i = count_in_dir_i / total_files.
-   Single-directory commits have H=0. Scattered commits have high H.
-   Tests: focused vs scattered development.
-
-PERMUTATION TEST (add to scripts 02 and 03):
-For each metric's best split point, shuffle the commit series 10,000 times.
-Compute max F-statistic for each shuffle. Permutation p-value = fraction of
-shuffles with F >= observed F. This is distribution-free — no normality or
-equal-variance assumptions needed.
-
-DATA: Commit JSON files in data/ have fields: index, hash, timestamp, author,
-subject, is_ai, file_count, lines_changed, time_gap_minutes. Some new metrics
-need additional fields — check what git log provides and extend the JSON if
-needed. If JSON extension is needed, document what was added.
-
-OUTPUT:
-1. Updated scripts (all 4)
-2. Verification report at verification/P10-1-eight-metrics.md:
-   - All 8 metrics × 2 repos: break date, F, p (parametric), p (permutation)
-   - Which metrics survive Bonferroni (adjusted for 8 metrics)
-   - Which metrics survive BH
-   - Summary: N of 8 break in each repo
+Read: ~/software/governance-phase-transition/plans/0361-P10-revision-plan.md § P10-1
+Read: ~/software/governance-phase-transition/scripts/ (all scripts for patterns)
+Execute P10-1: add 3 new metrics + permutation test to the analysis pipeline.
+Report at verification/P10-1-eight-metrics.md. All 8 metrics × 2 repos.
 ```
 
-### P10-2 Prompt (93% confidence)
-
+### P10-2 (93%)
 ```
 You are the Generator for 0361-P10-2.
-Read: ~/software/governance-phase-transition/plans/0361-P10-revision-plan.md (Section 4, P10-2)
+Read: ~/software/governance-phase-transition/plans/0361-P10-revision-plan.md § P10-2
 Edit: ~/software/governance-phase-transition/paper/stephenson-et-al-2026-autocatalytic-governance.md
-
-FOUR ADDITIONS to Section 2. No other changes.
-
-1. INTUITIVE SUMMARY (insert at start of Section 2, before "### 2.1")
-
-Add one paragraph (~80 words) giving the reader the plain-language version
-before theorems. Frame it like this: an LLM is like a skilled worker who does
-excellent work within a single shift but retains nothing between shifts.
-Governance adds three things: separation between doing and checking (structural),
-a persistent notebook (temporal), and a supervisor who detects drift (corrective).
-When all three sustain each other, the system self-maintains — and this creates
-a detectable shift in its output. Do NOT use the word "ethics."
-
-2. WITHIN-SESSION CLARIFICATION (insert after the theorem chain summary, line 52)
-
-After "...a consequence of the system's one-dimensional interaction topology."
-add: "This does not imply LLMs are ineffective within a single session — local
-correlations exist in one-dimensional systems, and within-context performance
-can be excellent. The constraint is on long-range order: cross-session coherence,
-accumulated learning, and persistent behavioral patterns. These are precisely
-the capabilities that governance infrastructure is designed to provide."
-
-3. BRIDGE TO KAUFFMAN (insert at end of Section 2.1, before "### 2.2")
-
-Add one sentence: "The Levin results establish the topological constraint;
-the question is what mechanism can escape it. Kauffman's theory of autocatalytic
-sets provides an answer: catalytic closure among governance components can
-create the higher-dimensional interaction topology that the Peierls argument
-requires."
-
-4. CORRECTIVE AXIS REFRAME (modify Section 2.3, item 3)
-
-Current: "A behavioral coherence protocol (Dignity Net) detects divergence
-between stated goals and observable actions, applying graduated responses
-from mirroring to refusal."
-
-Rewrite to lead with engineering function: "A closed-loop drift detection
-and correction mechanism detects divergence between intended and actual
-behavior, applying graduated responses from mirroring to hard stops. In
-control theory terms, this closes the feedback loop: without it, the system
-is open-loop and accumulates drift silently. The implementation in this study
-(Dignity Net [ref]) uses an ethical framework as its correction logic, but
-the axis's function is feedback control — any mechanism that detects behavioral
-drift and feeds back corrections would serve the same role."
-
-SCOPE: Only these four changes. Do not modify tables, statistics, or any
-other section.
+Execute P10-2: four additions to Section 2 (intuitive summary, within-session
+clarification, Levin→Kauffman bridge, corrective axis reframe). No other changes.
 ```
 
-### P10-3 Prompt (88% confidence — complex structural changes)
-
+### P10-3a (91%) ⚠ anneal at runtime — re-read paper first
 ```
-You are the Generator for 0361-P10-3.
-Read: ~/software/governance-phase-transition/plans/0361-P10-revision-plan.md (Section 4, P10-3)
-Read: ~/software/governance-phase-transition/verification/P10-1-eight-metrics.md (for new data)
+You are the Generator for 0361-P10-3a.
+Read: ~/software/governance-phase-transition/plans/0361-P10-revision-plan.md § P10-3a
 Edit: ~/software/governance-phase-transition/paper/stephenson-et-al-2026-autocatalytic-governance.md
-
-STRUCTURAL REORGANIZATION of Sections 3 and 4. This is the heaviest edit.
-
---- SECTION 3.1: DATA ---
-
-Restructure to 2 primary repos. Replace the 4-repo table with:
-
-| Repository | Role | Commits | Date Range | AI% | Governance |
-|---|---|---|---|---|---|
-| aurasys-memory | Governance system | 300 | Nov 2025-May 2026 | 70% | Mixed |
-| relinquishment | Technical manuscript | 924 | Feb 2026-May 2026 | 89% | Consistent Triad |
-
-Add one paragraph after the table: "We validated the detection tools on 8
-ungoverned open-source AI-assisted repositories (listed in Supplementary G).
-All 8 exhibited 1D disorder signatures — monotonic violation accumulation,
-rapid decorrelation, and no self-correction — confirming the tools detect
-the predicted pattern. The primary analysis is within-subject: the memory
-repository before and after catalytic closure."
-
-Remove the storytelling/traveller repo from primary analysis. Remove
-trusty-git-analytics from primary analysis. Both can be referenced in
-supplementary material.
-
---- SECTION 3.2: METRICS ---
-
-List all 8 metrics:
-1. lines_changed (total lines added + deleted)
-2. file_count (files modified)
-3. time_gap (minutes since previous commit)
-4. msg_length (commit message character count)
-5. AI_fraction (binary: AI or human authored)
-6. deletions_fraction (lines_deleted / lines_changed)
-7. message_structure (binary: matches governance pattern)
-8. path_entropy (Shannon entropy of directory paths)
-
-Add: "These metrics are chosen because they are extractable from any git
-repository without access to file contents. We report all 8 rather than
-selecting those that produce significant breaks — the theory predicts a
-regime change, and metrics that do not break are informative null results."
-
-Add paragraph (R25): "We do not claim these metrics are thermodynamic
-variables. The theory predicts a regime change at catalytic closure; commit
-metrics are sensitive to regime changes in development behavior. The
-detection is empirical: if the regime change predicted by the theory exists,
-it should be visible in process metadata."
-
---- SECTION 3.5: ABRCE ---
-
-Replace current Section 3.5 with a fuller introduction. Define all 5 operators:
-- A (Abstraction): NodeField -> EdgeField. Pairwise differences. Extracts
-  relational gradient between consecutive commits.
-- B (Binding): EdgeField -> EdgeField. Local symmetric accumulation over
-  sliding window. Smooths high-frequency variation.
-- R (Circulation): EdgeField x R -> EdgeField. Antisymmetric circulation.
-  CRITICAL: R is trivially zero on 1D data. This is the ABRCE-level
-  statement of the Levin result — a 1D system has no circulation, no
-  feedback loops, no non-trivial topology. R != 0 requires at least 2D.
-- C (Coherence): EdgeField -> EdgeField. Bounded output in (-1, 1).
-  Prevents divergence.
-- E (Composite): E(x) = C(R(B(A(x)),rho)). On 1D, R=0, so E = C(B(A(x))).
-
-Add: "The ABRCE operators are domain-neutral by construction [7]. The same
-operators describe lattice gradients in statistical mechanics, first
-differences in time series, filter cascades in signal processing, and
-message-passing in graph neural networks (see Supplementary C for the
-complete cross-domain dictionary with exactness ratings)."
-
---- SECTION 4.1: MOVE TO SUPPLEMENTARY ---
-
-Move the entire current Section 4.1 (ungoverned baseline) to a new
-Supplementary G: "Tool Validation on Ungoverned Repositories." Renumber
-remaining results sections: current 4.2 becomes 4.1, current 4.3 becomes
-4.2, current 4.4 becomes 4.3.
-
---- TABLES 1-2: SIMPLIFY + EXPAND ---
-
-Update Tables 1 and 2 to include all 8 metrics. Simplify columns to:
-| Metric | Break Date | p (parametric) | p (permutation) | Bonf | BH |
-
-Move pre/post means and Cohen's d to prose paragraphs following each table.
-Use data from verification/P10-1-eight-metrics.md.
-
---- SECTION 4.3 (was 4.4): ACF ---
-
-Address the ACF non-result (R21): "The memory repository shows near-zero
-autocorrelation in both regimes. This apparent contradiction — governance
-should create order, so why no ACF increase? — reflects a measurement
-distinction. The structural breaks detect a change in the DISTRIBUTION of
-commit sizes (from bulk dumps to focused commits), not in their sequential
-correlation. ACF measures commit-to-commit dependence; the regime change is
-in the typical scale and frequency of commits, which the F-test captures
-directly."
-
-ACCEPTANCE: 2-repo primary structure. 8 metrics in all tables. ABRCE fully
-explained with R=0 significance. Section 4.1 moved to supplementary.
-Tables have 6 columns (readable). ACF non-result addressed.
+Execute P10-3a: structural reorganization. 2-repo primary table, move Section 4.1
+to Supplementary G, renumber 4.x, update all cross-references. Structure only —
+do not touch ABRCE, metrics list, tables, or ACF.
 ```
 
-### P10-4 Prompt (91% confidence)
+### P10-3b (87%)
+```
+You are the Generator for 0361-P10-3b.
+Read: ~/software/governance-phase-transition/plans/0361-P10-revision-plan.md § P10-3b
+Edit: ~/software/governance-phase-transition/paper/stephenson-et-al-2026-autocatalytic-governance.md
+Execute P10-3b: rewrite Section 3.5 (ABRCE Operators). Define all 5 operators
+with representation types. R=0 on 1D is the ABRCE-level Levin result — make this
+the key paragraph. Add cross-domain dictionary reference. Section 3.5 only.
+```
 
+### P10-3c (92%)
+```
+You are the Generator for 0361-P10-3c.
+Read: ~/software/governance-phase-transition/plans/0361-P10-revision-plan.md § P10-3c
+Read: ~/software/governance-phase-transition/verification/P10-1-eight-metrics.md
+Edit: ~/software/governance-phase-transition/paper/stephenson-et-al-2026-autocatalytic-governance.md
+Execute P10-3c: list 8 metrics in §3.2, build 2 tables (per-repo, 6 cols),
+address ACF non-result. All numbers from P10-1 verification report only.
+```
+
+### P10-4 (91%)
 ```
 You are the Generator for 0361-P10-4.
-Read: ~/software/governance-phase-transition/plans/0361-P10-revision-plan.md (Section 4, P10-4)
+Read: ~/software/governance-phase-transition/plans/0361-P10-revision-plan.md § P10-4
 Edit: ~/software/governance-phase-transition/paper/stephenson-et-al-2026-autocatalytic-governance.md
-
-CONTENT EDITS to Abstract, Introduction, Discussion, Conclusion, References.
-
---- ABSTRACT ---
-
-(R8) Before the final sentence ("To our knowledge..."), insert:
-"The detection uses only commit metadata — timestamps, line counts, file
-counts — and requires no access to code contents or subjective quality
-assessments, enabling deployment as a blind organizational diagnostic."
-
---- INTRODUCTION ---
-
-(R9) Replace the first paragraph (starting "Large language models deployed
-as coding assistants operate without persistence") with:
-"Large language models are architecturally one-dimensional autoregressive
-systems. Within a single context window, they generate fluently and
-coherently. But cross-session coherence — remembering corrections,
-maintaining behavioral patterns, accumulating learning — requires external
-structure. The topology of that structure determines whether coherence is
-sustainable."
-
-(R23) Add to the second paragraph, after "The limitation is structural":
-"We show that the resulting phase transition is detectable in commit
-metadata alone, without access to code contents, enabling blind
-organizational diagnostics."
-
---- DISCUSSION: NEW SUBSECTION "The Corrective Axis" ---
-
-(R11, R24) Add as Section 5.2 (shift subsequent numbering). Content:
-
-"The corrective axis is the most counterintuitive governance component. In
-our experience presenting this framework to software engineers, the
-structural axis (role separation) and temporal axis (persistent memory)
-are immediately understood as good engineering practice. The corrective
-axis — a mechanism that detects behavioral drift and applies graduated
-corrections — is consistently dismissed as irrelevant overhead.
-
-The data disagree. The structural and temporal axes ran together for
-approximately 2.5 months (early December 2025 to mid-February 2026) without
-triggering a detectable structural break. The break appeared within one day
-of adding the corrective axis, when catalytic closure was reached.
-
-In control theory terms, a system with structure and memory but no corrective
-feedback is open-loop: it executes its program but cannot detect or correct
-deviations. LLMs have specific drift modes — agreeableness under pressure,
-confabulation, constraint amnesia over long interactions — that accumulate
-silently in an open-loop configuration. The corrective axis closes the
-feedback loop. Its implementation in this study uses an ethical framework
-(Dignity Net) as its correction logic, but the axis's engineering function
-is drift detection and correction. Any mechanism that detects behavioral
-divergence and feeds back graduated corrections would serve the same role.
-
-The engineering implication is direct: structure plus memory is necessary
-but not sufficient. The autocatalytic set does not close without the
-feedback loop, and the phase transition does not occur."
-
---- LIMITATIONS SURGERY ---
-
-(R2) Replace "Single developer" with: "Single committer. All commit data
-are from one developer (the first author), though the governance
-infrastructure was designed by three people — one per axis. We cannot
-separate committer-specific effects from governance effects without
-multi-committer data."
-
-(R3) Delete "No pre-transition multi-participant data" entirely.
-
-(R4) Replace "Commit metrics are proxies" with: "Commit metrics measure
-process structure, not output quality. We claim a detectable regime change,
-not an improvement in code correctness or user satisfaction."
-
-(R6) Delete "Bonferroni correction is conservative" entirely.
-
-(R7) Replace "Temporal confounds" with: "Temporal confounds. Memory had
-been accumulating for months before the detected break. An alternative
-hypothesis: memory crossed a critical threshold on February 13 independent
-of the Dignity Net installation, and the coincidence is accidental.
-Counter-evidence: memory grew continuously from November 2025, yet no
-structural break appeared during 2.5 months of growth. The break coincides
-with a discrete event (third-component installation), not a gradual
-accumulation. However, we cannot fully disentangle the two because DN
-installation and possible memory maturity coincide temporally."
-
---- CONCLUSION ---
-
-(R10) Replace third implication paragraph. Remove: "Larger models, better
-training data, and longer context windows do not escape the 1D limitation."
-Replace with: "Third, the relevant variable is not model capability but
-interaction topology. The question shifts from 'how smart is the AI?' to
-'what topology does the human-AI system occupy?' — and this topology is
-measurable."
-
---- REPLICATION (R27) ---
-
-Add as Section 5.7 (or after current Limitations, before Conclusion):
-
-"### Replication
-
-We invite replication in two forms.
-
-**Computational replication.** All data, scripts, and analysis code are
-publicly available at github.com/energyscholar/governance-phase-transition.
-The commit-series JSON files in data/ contain all metrics for all
-repositories. Running the four scripts in scripts/ reproduces every number
-in this paper. Requirements: Python 3.10+, NumPy, SciPy.
-
-**Independent replication.** To test the theory on new data: (1) set up
-any LLM coding assistant on a git-tracked project; (2) develop for at
-least 8 weeks with at most two of three governance axes (structural role
-separation, persistent memory, corrective drift detection); (3) at a
-documented date, add the third axis to complete catalytic closure; (4)
-continue for at least 8 weeks; (5) extract all 8 commit metrics (our
-scripts work on any git repository); (6) run blind structural break
-detection. Pre-registration strengthens the design. Both positive and
-negative results are valuable — if the break does not coincide with
-closure, that constrains the theory."
-
---- REFERENCES ---
-
-(R19) Add: [8] Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J.,
-Jones, L., Gomez, A. N., Kaiser, L., & Polosukhin, I. (2017). Attention
-Is All You Need. *Advances in Neural Information Processing Systems*, 30.
-
-Update any in-text references to transformers to cite [8] alongside [1]
-where appropriate (e.g., Introduction paragraph 2).
-
-ACCEPTANCE: Abstract has practical finding. Opening fixed. Corrective axis
-subsection present. Limitations trimmed from 6 to 3. Replication section
-present. Vaswani cited. Conclusion straw man removed.
+Execute P10-4: abstract fix, opening sentence, corrective axis subsection,
+limitations surgery (6→3), replication section, Vaswani citation, AI reading
+prompts appendix. Plan has exact replacement text for each item.
 ```
 
-### P10-5 Prompt (85% confidence — figure generation is always risky)
-
+### P10-5 (85%)
 ```
 You are the Generator for 0361-P10-5.
-Read: ~/software/governance-phase-transition/plans/0361-P10-revision-plan.md (Section 4, P10-5)
+Read: ~/software/governance-phase-transition/plans/0361-P10-revision-plan.md § P10-5
 Read: ~/software/governance-phase-transition/data/ (commit-series JSON files)
-
-TASK: Generate 3 figures for the paper using matplotlib. Save as PNG at
-300 DPI in paper/figures/. Also create the generation script at
-scripts/05-generate-figures.py.
-
-FIGURE 1: TIMELINE (paper/figures/fig1-timeline.png)
-
-X-axis: date (Nov 2025 - May 2026), monthly ticks.
-Plot: commit frequency as a step histogram or scatter (1 dot per commit)
-for aurasys-memory, using time from commit-series JSON.
-
-Mark with vertical dashed lines + labels:
-- "Triad installed" at 2025-12-01 (approximate)
-- "DN installed / catalytic closure" at 2026-02-13
-- Detected break dates as triangular markers on X-axis
-
-Color: pre-transition commits in red/orange, post-transition in blue/green.
-Title: "Figure 1: Governance installation and detected structural breaks"
-Clean, publication-quality. No gridlines. Minimal decoration.
-
-FIGURE 2: METRIC COMPARISON (paper/figures/fig2-metrics.png)
-
-Side-by-side box plots for pre vs post transition, for the 3 most dramatic
-metrics: time_gap, file_count, lines_changed.
-
-Read data from data/aurasys/commit-series.json. Split at commit index
-corresponding to 2026-02-13. Pre = commits before split, Post = after.
-
-3 subplots in a row. Each shows pre (red) and post (blue) box plots.
-Y-axis log scale (the differences are orders of magnitude).
-Label with pre-mean and post-mean values.
-Title: "Figure 2: Pre- and post-transition metric distributions"
-
-FIGURE 3: ACS SCHEMATIC (paper/figures/fig3-acs.png)
-
-Three nodes arranged as an equilateral triangle:
-- Top: "Structural (Triad)" 
-- Bottom-left: "Temporal (Memory)"
-- Bottom-right: "Corrective (Feedback)"
-
-Six directed edges (curved arrows) with brief labels:
-- Structural→Temporal: "structured records"
-- Temporal→Structural: "accumulated corrections"
-- Temporal→Corrective: "session history"
-- Corrective→Temporal: "correction records"
-- Corrective→Structural: "prevents role collapse"
-- Structural→Corrective: "independent evaluation"
-
-Below the triangle, three upward arrows from a box labeled
-"Food set: {LLM, git, filesystem, protocols}"
-
-Title: "Figure 3: Governance autocatalytic set (K₃ topology)"
-Use matplotlib patches and annotations. Clean, no matplotlib default styling.
-
-SCRIPT: scripts/05-generate-figures.py
-- Reads from data/ JSON files
-- Generates all 3 figures
-- Deterministic (set random seed if any randomness)
-- No dependencies beyond matplotlib + numpy
-
-After generating figures, add figure references to the paper:
-- Figure 1 referenced in Section 3.1 (after governance timeline paragraph)
-- Figure 2 referenced in Section 4.1 (after Table 1)
-- Figure 3 referenced in Section 2.3 (after six-link table)
-
-Use markdown image syntax: ![Figure N caption](figures/figN-name.png)
-
-ACCEPTANCE: Three PNGs in paper/figures/. Script runs clean. Figures
-referenced in paper text. PDF builds with figures visible.
+Execute P10-5: generate 3 figures (topology comparison, timeline, metric
+distributions). Script at scripts/05-generate-figures.py. matplotlib+numpy only.
+300 DPI PNG to paper/figures/. Add figure refs to paper. Design specs in plan.
 ```
 
 ---
@@ -645,9 +368,11 @@ referenced in paper text. PDF builds with figures visible.
 |---|---|
 | P10-1 | `0361-P10-1: Add 3 metrics + permutation test — 8-metric analysis` |
 | P10-2 | `0361-P10-2: Theory accessibility — intuitive summary, within-session clarification, feedback control reframe` |
-| P10-3 | `0361-P10-3: Structural reorganization — 2-repo primary, 8 metrics, ABRCE explained, baseline to supplementary` |
-| P10-4 | `0361-P10-4: Content revision — abstract/intro/discussion/limitations/replication/references` |
-| P10-5 | `0361-P10-5: Figures — timeline, metric comparison, ACS schematic` |
+| P10-3a | `0361-P10-3a: Structural reorganization — 2-repo primary, baseline to supplementary, section renumbering` |
+| P10-3b | `0361-P10-3b: ABRCE rewrite — all 5 operators, R=0 significance, cross-domain dictionary` |
+| P10-3c | `0361-P10-3c: Metrics and tables — 8 metrics listed, 2 tables (per-repo), ACF addressed` |
+| P10-4 | `0361-P10-4: Content revision — abstract/intro/discussion/limitations/replication/appendix` |
+| P10-5 | `0361-P10-5: Figures — topology comparison, timeline, metric distributions` |
 | Final | `0361-P10: Rebuild PDF after full revision` |
 
 ---
@@ -657,7 +382,11 @@ referenced in paper text. PDF builds with figures visible.
 | Risk | Mitigation |
 |---|---|
 | New metrics don't break cleanly | Report all 8 regardless. Non-breaking metrics are informative nulls. |
-| P10-3 structural changes break paper flow | P10-4 does a flow pass on abstract/intro/conclusion after structure is set |
+| P10-3a renumbering breaks cross-references | Grep for old section numbers + "ungoverned baseline" after P10-3a. Fix before P10-3b/3c. |
+| P10-3b ABRCE rewrite misses R=0 significance | Acceptance criterion: R=0 explicitly linked to Levin Thm 2. Auditor verifies. |
+| P10-3c tables use wrong data | Acceptance: all numbers sourced from P10-1 verification report. No invented values. |
+| P10-3x prompts stale after earlier phases | **Each P10-3x prompt needs fresh annealing at runtime.** Paper text shifts with each phase. |
 | Figure generation fails in PDF | Test PDF build after P10-5. Fallback: ASCII tables or external figure tools. |
+| Topology figure (Fig 1) too cluttered | Fallback: equilateral triangle instead of isometric 3D. K₃ topology is identical either way. |
 | Permutation test contradicts parametric results | Report both. If they disagree substantially, investigate and document. |
-| 5 phases is too many Generator runs | Phases 2+3 could merge if Generator handles the scope. But 88% confidence on P10-3 suggests keeping them separate. |
+| 7 phases is many Generator runs | Each is focused and high-confidence (87-95%). Split reduces risk vs monolithic P10-3 (was 86%). |
